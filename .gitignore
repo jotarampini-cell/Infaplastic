@@ -27,7 +27,6 @@ tmp/
 # Catalogo y archivos temporales del proyecto
 catalogo.pdf
 "Catalogo de productos/"
-Videos/
 
 # Imagenes temporales extraídas del PDF (no necesarias en producción)
 Images/products/p0*/

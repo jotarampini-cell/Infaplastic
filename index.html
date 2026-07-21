@@ -93,8 +93,14 @@
   .hero h1 .out{color:transparent;-webkit-text-stroke:2px var(--neon)}
   .hero p.sub{max-width:520px;margin:26px 0 34px;font-size:18px;color:#cfd2ce}
   .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap}
-  .hero .meta{position:absolute;right:24px;bottom:36px;text-align:right;font-size:12.5px;color:#8f938d;z-index:2}
-  .hero .meta b{display:block;font-family:var(--display);font-stretch:125%;font-weight:800;color:var(--neon);font-size:26px;line-height:1}
+  .hero .meta{display:none}
+  /* Hero Stats Strip */
+  .hero-stats{position:absolute;bottom:0;left:0;right:0;z-index:3;display:flex;align-items:center;justify-content:center;gap:0;background:rgba(14,14,14,.72);backdrop-filter:blur(12px);border-top:1px solid rgba(131,247,0,.18);padding:16px 24px}
+  .hstat{display:flex;align-items:baseline;gap:4px;flex-direction:column;align-items:center;padding:0 32px}
+  .hnum{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(28px,4vw,44px);color:var(--neon);line-height:1;font-variant-numeric:tabular-nums}
+  .hunit{font-family:var(--display);font-weight:900;font-size:clamp(20px,2.5vw,28px);color:var(--neon)}
+  .hlabel{font-size:11.5px;color:#8f938d;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;white-space:nowrap}
+  .hstat-divider{width:1px;height:42px;background:rgba(255,255,255,.12);flex-shrink:0}
 
   /* TRUST STRIP */
   .trust{background:var(--paper);border-bottom:1px solid var(--line);width:100%;overflow:hidden}
@@ -103,6 +109,32 @@
   .trust .t svg{flex-shrink:0;color:var(--green-action)}
   .trust .t b{display:block;font-size:14px;font-weight:600}
   .trust .t span{font-size:12.5px;color:var(--grey)}
+
+  /* VIDEO STORIES SECTION */
+  .stories-sec{padding:72px 0;background:var(--carbon);overflow:hidden;position:relative}
+  .stories-sec::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(131,247,0,.07),transparent 65%);pointer-events:none}
+  .stories-inner{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 420px;gap:72px;align-items:center}
+  .stories-text{color:#fff}
+  .stories-text h2{margin:14px 0 20px;color:#fff}
+  .stories-text p{color:#a0a49e;font-size:17px;line-height:1.65;max-width:480px}
+  /* Reel */
+  .stories-reel{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .stories-viewport{width:100%;max-width:320px;aspect-ratio:9/16;border-radius:22px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.55),0 0 0 1px rgba(131,247,0,.18);position:relative}
+  .stories-track{display:flex;height:100%;transition:transform .4s cubic-bezier(.4,0,.2,1)}
+  .story-slide{min-width:100%;height:100%;position:relative;flex-shrink:0}
+  .story-vid{width:100%;height:100%;object-fit:cover;display:block}
+  .story-caption{position:absolute;bottom:0;left:0;right:0;padding:32px 16px 18px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font-size:14px;font-weight:600;letter-spacing:.01em}
+  /* Progress bars */
+  .story-progress{display:flex;gap:5px;width:100%;max-width:320px}
+  .sp-bar{flex:1;height:3px;background:rgba(255,255,255,.22);border-radius:2px;overflow:hidden;position:relative}
+  .sp-bar.active::after{content:"";position:absolute;inset:0;background:var(--neon);transform-origin:left;animation:spFill 6s linear forwards}
+  @keyframes spFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .sp-bar.done{background:var(--neon)}
+  /* Dots */
+  .story-dots{display:flex;gap:8px;justify-content:center}
+  .sdot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.28);cursor:pointer;padding:0;transition:background .2s,transform .2s}
+  .sdot.active{background:var(--neon);transform:scale(1.3)}
+  .sdot:hover{background:rgba(131,247,0,.6)}
 
   /* SECTION SHELL */
   section.block{padding:78px 0;width:100%;overflow:hidden}
@@ -422,7 +454,10 @@
     .topstrip{font-size:11.5px}
     .topstrip .rt{display:none}
     .topstrip .wrap{justify-content:center;text-align:center}
-    .hero .meta{position:relative;right:auto;bottom:auto;margin-top:34px;text-align:left;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:14px 20px;border-radius:14px;display:inline-block}
+    .hero-stats{padding:12px 16px;gap:0;overflow-x:auto;justify-content:flex-start}
+    .hstat{padding:0 20px;white-space:nowrap}
+    .hnum{font-size:clamp(22px,5vw,32px)}
+    .hstat-divider{height:32px}
     .hero h1{font-size:clamp(36px,9vw,64px)}
     .hero .cta-row{flex-direction:column;width:100%}
     .hero .cta-row .btn{width:100%}
@@ -501,9 +536,21 @@
     .add{font-size:13px;padding:8px 4px}
   }
 
-  @media(prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important}
-    .reveal{opacity:1;transform:none}
+  @media(max-width:960px){
+    .stories-inner{grid-template-columns:1fr;gap:40px;text-align:center}
+    .stories-text p{max-width:100%}
+    .stories-reel{width:100%;align-items:center}
+    .stories-viewport{max-width:280px}
+    .story-progress,.story-dots{max-width:280px}
+  }
+  @media(max-width:640px){
+    .stories-sec{padding:48px 0}
+    .stories-viewport{max-width:240px}
+    .story-progress,.story-dots{max-width:240px}
+    .hero-stats{padding:10px 8px;gap:0}
+    .hstat{padding:0 12px}
+    .hlabel{font-size:10px}
+    .hnum{font-size:clamp(20px,6vw,28px)}
   }
 </style>
 </head>
@@ -544,7 +591,14 @@
     <p class="sub">Vasos, envases, cubiertos y más. Calidad, diseño y precio en una sola tienda — comprando una caja o comprando cien.</p>
     <div class="cta-row"><a href="#promos" class="btn btn-neon">Ver catálogo</a><a href="#b2b" class="btn btn-ghost-neon">Soy mayorista</a></div>
   </div>
-  <div class="meta"><b>+2.500</b>productos<br>en stock</div>
+  <!-- Hero counters strip -->
+  <div class="hero-stats">
+    <div class="hstat"><span class="hnum" data-target="1200">0</span><span class="hunit">+</span><span class="hlabel">productos en stock</span></div>
+    <div class="hstat-divider"></div>
+    <div class="hstat"><span class="hnum" data-target="850">0</span><span class="hunit">+</span><span class="hlabel">clientes activos</span></div>
+    <div class="hstat-divider"></div>
+    <div class="hstat"><span class="hnum" data-target="24">0</span><span class="hunit">h</span><span class="hlabel">tiempo de respuesta</span></div>
+  </div>
 </section>
 
 <div class="trust"><div class="wrap">
@@ -553,6 +607,48 @@
   <div class="t"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><div><b>Factura fiscal</b><span>Para tu contabilidad</span></div></div>
   <div class="t"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v11H8l-4 3z"/></svg><div><b>Atención directa</b><span>Por WhatsApp, en minutos</span></div></div>
 </div></div>
+
+<!-- VIDEO STORIES -->
+<section class="stories-sec reveal" id="stories">
+  <div class="stories-inner">
+    <div class="stories-text">
+      <div class="eyebrow" style="color:var(--neon)">Infaplastic en acción</div>
+      <h2 class="display">Una solución para <span class="hl">cada presentación</span></h2>
+      <p>Restaurantes, pastelerías, cafeterías, food trucks y más — tenemos el empaque perfecto para que tu producto luzca profesional desde el primer día.</p>
+      <a href="#promos" class="btn btn-neon" style="margin-top:8px">Ver catálogo completo</a>
+    </div>
+    <div class="stories-reel">
+      <div class="stories-viewport">
+        <div class="stories-track" id="storiesTrack">
+          <div class="story-slide">
+            <video class="story-vid" src="Videos/SaveClip.App_AQNaI8SvbD3TkMbM141rFRcy-OmLGuZmmBKp0E5c8w7wHzKhjqN8yP2ObO5QiKLhuHj3iLO7MvUiJnAltdx1f6W1KOnyI9jNmItqoLA.mp4" autoplay muted loop playsinline></video>
+            <div class="story-caption">🍽️ Para restaurantes y comedores</div>
+          </div>
+          <div class="story-slide">
+            <video class="story-vid" src="Videos/SaveClip.App_AQNyjtM5UHjfGSXUUdhyUAW4vnT8egQXnxM3h5usJ-Q6cULEngl8gNJSl51Mr511SPRwVAdxyM2d33esvBXici16Gdc8NhhkD18vXfc.mp4" muted loop playsinline></video>
+            <div class="story-caption">🎂 Para pastelerías y repostería</div>
+          </div>
+          <div class="story-slide">
+            <video class="story-vid" src="Videos/SaveClip.App_AQPV03YfEcCBzREhCIgVSMVnJZHn5uhXXIPGJknfvfoWe5HBW8hJOJTbfij0VQrwCNJKzcYsZF83Se3ulacX-vMfh0D8r9vez5nPLmo.mp4" muted loop playsinline></video>
+            <div class="story-caption">☕ Para cafeterías y food trucks</div>
+          </div>
+        </div>
+      </div>
+      <!-- Progress bar -->
+      <div class="story-progress" id="storyProgress">
+        <div class="sp-bar active" id="sp0"></div>
+        <div class="sp-bar" id="sp1"></div>
+        <div class="sp-bar" id="sp2"></div>
+      </div>
+      <!-- Dots -->
+      <div class="story-dots" id="storyDots">
+        <button class="sdot active" data-idx="0" aria-label="Historia 1"></button>
+        <button class="sdot" data-idx="1" aria-label="Historia 2"></button>
+        <button class="sdot" data-idx="2" aria-label="Historia 3"></button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- DUAL BANNERS -->
 <div class="wrap"><div class="dual reveal">
@@ -1237,7 +1333,95 @@
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeCart();closeQV();closeMobileNav()}});
 
   renderAll();
+
+  /* ── ANIMATED COUNTERS ── */
+  (function(){
+    var nums = document.querySelectorAll('.hnum');
+    if(!nums.length) return;
+    var done = false;
+    function animCount(el){
+      var target = parseInt(el.dataset.target,10);
+      var duration = 1800;
+      var start = null;
+      function step(ts){
+        if(!start) start = ts;
+        var progress = Math.min((ts-start)/duration,1);
+        var ease = 1-Math.pow(1-progress,3);
+        el.textContent = Math.round(ease*target).toLocaleString('es-VE');
+        if(progress<1) requestAnimationFrame(step);
+        else el.textContent = target.toLocaleString('es-VE');
+      }
+      requestAnimationFrame(step);
+    }
+    var heroObs = new IntersectionObserver(function(entries){
+      if(entries[0].isIntersecting && !done){
+        done = true;
+        nums.forEach(function(el){ animCount(el); });
+        heroObs.disconnect();
+      }
+    },{threshold:0.4});
+    var heroStats = document.querySelector('.hero-stats');
+    if(heroStats) heroObs.observe(heroStats);
+  })();
+
+  /* ── STORIES SLIDESHOW ── */
+  (function(){
+    var track = document.getElementById('storiesTrack');
+    if(!track) return;
+    var slides = track.querySelectorAll('.story-slide');
+    var dots   = document.querySelectorAll('.sdot');
+    var bars   = document.querySelectorAll('.sp-bar');
+    var vids   = track.querySelectorAll('.story-vid');
+    var total  = slides.length;
+    var cur    = 0;
+    var timer  = null;
+
+    function goTo(idx){
+      if(idx < 0) idx = total-1;
+      if(idx >= total) idx = 0;
+      // progress bars
+      bars.forEach(function(b,i){
+        b.classList.remove('active','done');
+        if(i < idx) b.classList.add('done');
+      });
+      bars[idx].classList.add('active');
+      // dots
+      dots.forEach(function(d){ d.classList.remove('active'); });
+      dots[idx].classList.add('active');
+      // track
+      track.style.transform = 'translateX(-'+idx*100+'%)';
+      // videos — pause all, play current
+      vids.forEach(function(v){ v.pause(); });
+      if(vids[idx]){ vids[idx].currentTime=0; vids[idx].play().catch(function(){}); }
+      cur = idx;
+      // auto-advance after 6s
+      clearTimeout(timer);
+      timer = setTimeout(function(){ goTo(cur+1); }, 6200);
+    }
+
+    // Dot clicks
+    dots.forEach(function(d){
+      d.addEventListener('click', function(){ goTo(parseInt(d.dataset.idx)); });
+    });
+
+    // Touch swipe on viewport
+    var vp = document.querySelector('.stories-viewport');
+    var touchX = null;
+    vp.addEventListener('touchstart',function(e){ touchX = e.touches[0].clientX; },{passive:true});
+    vp.addEventListener('touchend',function(e){
+      if(touchX===null) return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      touchX = null;
+      if(Math.abs(dx) > 40){ goTo(dx < 0 ? cur+1 : cur-1); }
+    });
+    // Click to advance
+    vp.addEventListener('click',function(){ goTo(cur+1); });
+
+    goTo(0);
+  })();
+
 })();
 </script>
 </body>
 </html>
+
