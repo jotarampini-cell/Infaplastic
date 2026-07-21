@@ -44,7 +44,7 @@
   .topstrip strong{color:var(--neon);font-weight:600}
   .topstrip .rt{display:flex;gap:20px;align-items:center}
   .topstrip a:hover{color:#fff}
-  header.main{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);width:100%}
+  header.main{position:sticky;top:0;z-index:90;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);box-shadow:0 4px 18px rgba(0,0,0,.06);width:100%}
   header.main .wrap{display:flex;align-items:center;gap:28px;height:72px}
   nav.primary{display:flex;gap:26px;margin-left:8px}
   nav.primary a{font-weight:500;font-size:15px;padding:6px 0;position:relative}
@@ -552,6 +552,113 @@
     .hlabel{font-size:9px;letter-spacing:0}
     .hnum{font-size:clamp(18px,5vw,26px)}
   }
+
+  /* ─── CHECKOUT MODAL SYSTEM ─── */
+  .checkout-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(17,24,39,0.78);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    display: none; align-items: center; justify-content: center;
+    overflow-y: auto; padding: 12px;
+  }
+  .checkout-overlay.open { display: flex; }
+  .checkout-modal-card {
+    background: #f8f9fb; color: #111827;
+    width: 100%; max-width: 500px;
+    max-height: 92vh; border-radius: 20px;
+    overflow-y: auto; position: relative;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    font-family: 'Inter', system-ui, sans-serif;
+    animation: chkFadeUp .3s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes chkFadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .checkout-close-x {
+    position: absolute; top: 12px; right: 14px; z-index: 50;
+    background: rgba(0,0,0,0.06); border: none;
+    width: 32px; height: 32px; border-radius: 50%;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    display: grid; place-items: center; transition: background .18s; color: #111827;
+  }
+  .checkout-close-x:hover { background: rgba(0,0,0,0.12); }
+  .chk-header { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid #e8eaed; padding: 14px 18px; }
+  .chk-header-inner { max-width: 480px; margin: 0 auto; }
+  .chk-header-top { display: flex; align-items: center; justify-content: space-between; }
+  .chk-header-title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+  .chk-header-total { text-align: right; }
+  .chk-header-total-label { font-size: 10px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .05em; }
+  .chk-header-total-amount { font-size: 17px; font-weight: 800; color: #2563eb; }
+  .chk-progress { display: flex; gap: 6px; margin-top: 14px; }
+  .chk-progress-step { flex: 1; }
+  .chk-progress-bar { height: 5px; border-radius: 3px; background: #e5e7eb; transition: background .3s; }
+  .chk-progress-bar.active { background: #111827; }
+  .chk-progress-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #6b7280; margin-top: 4px; transition: color .3s; }
+  .chk-progress-label.active { color: #111827; }
+  .chk-main { max-width: 480px; margin: 0 auto; padding: 20px 16px 20px; }
+  .chk-step-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .chk-step-sub { font-size: 13px; color: #6b7280; margin-bottom: 20px; }
+  .chk-card { background: #ffffff; border: 1.5px solid #e8eaed; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 16px; color: #111827; }
+  .chk-card + .chk-card { margin-top: 10px; }
+  .chk-card-interactive { cursor: pointer; transition: all .2s; }
+  .chk-card-interactive:hover { border-color: #a5b4fc; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-1px); }
+  .chk-card-interactive.selected { border-color: #2563eb; background: #eff6ff; box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+  .chk-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #d1d5db; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; }
+  .chk-radio.selected { border-color: #2563eb; background: #2563eb; }
+  .chk-radio-dot { width: 7px; height: 7px; border-radius: 50%; background: white; }
+  .chk-input, select.chk-input { width: 100%; padding: 13px 15px; font-size: 15px; font-family: inherit; color: #111827; background: #ffffff; border: 1.5px solid #e8eaed; border-radius: 11px; outline: none; transition: all .2s; appearance: none; -webkit-appearance: none; }
+  .chk-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+  .chk-input-label { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; display: block; }
+  .chk-input-group { margin-bottom: 14px; }
+  select.chk-input { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 40px; }
+  .chk-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 15px 24px; font-size: 15px; font-weight: 700; font-family: inherit; color: #1a2a4a; background: #ffffff; border: 2px solid #1abcfe; border-radius: 13px; cursor: pointer; transition: all .25s; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+  .chk-btn-primary:hover { box-shadow: 0 6px 20px rgba(26,188,254,.3), 0 2px 8px rgba(26,188,254,.15); transform: translateY(-2px); }
+  .chk-btn-primary:active { transform: translateY(0) scale(.98); }
+  .chk-btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+  .chk-seg { display: flex; background: #f3f4f6; padding: 5px; border-radius: 11px; gap: 4px; margin-bottom: 20px; }
+  .chk-seg-btn { flex: 1; padding: 9px; font-size: 13px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: all .2s; font-family: inherit; background: none; color: #6b7280; }
+  .chk-seg-btn.active { background: #2563eb; color: white; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .chk-mode-icon { width: 40px; height: 40px; border-radius: 10px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; transition: background .2s; }
+  .chk-card-interactive.selected .chk-mode-icon { background: #2563eb; color: #fff; }
+  .chk-mode-title { font-size: 14px; font-weight: 700; }
+  .chk-mode-desc { font-size: 12px; color: #6b7280; margin-top: 2px; }
+  .chk-mode-badge { font-size: 10px; font-weight: 700; background: #eff6ff; color: #2563eb; border-radius: 99px; padding: 2px 8px; margin-top: 4px; display: inline-block; }
+  .chk-summary-box { background: #f3f4f6; border: 1px solid #e8eaed; border-radius: 12px; padding: 14px; margin-top: 16px; }
+  .chk-summary-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+  .chk-summary-row + .chk-summary-row { margin-top: 8px; }
+  .chk-summary-label { color: #6b7280; display: flex; align-items: center; gap: 6px; }
+  .chk-summary-value { font-weight: 600; }
+  .chk-summary-divider { height: 1px; background: #e8eaed; margin: 10px 0; }
+  .chk-pay-row { display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid #e8eaed; border-radius: 11px; padding: 12px 14px; }
+  .chk-pay-row + .chk-pay-row { margin-top: 8px; }
+  .chk-pay-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #6b7280; }
+  .chk-pay-value { font-size: 14px; font-weight: 700; margin-top: 2px; }
+  .chk-pay-amount { background: #eff6ff; border-color: rgba(37,99,235,.2); }
+  .chk-pay-amount .chk-pay-value { color: #2563eb; font-size: 16px; }
+  .chk-copy-btn { background: none; border: none; cursor: pointer; padding: 7px; border-radius: 8px; color: #6b7280; transition: all .2s; display: flex; }
+  .chk-copy-btn:hover { background: #f3f4f6; color: #111827; }
+  .chk-upload-zone { border: 2px dashed #e8eaed; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all .2s; }
+  .chk-upload-zone:hover { border-color: #1abcfe; background: rgba(26,188,254,.03); }
+  .chk-upload-zone.has-file { border-color: rgba(37,99,235,.3); background: #eff6ff; cursor: default; }
+  .chk-upload-icon { font-size: 28px; margin-bottom: 8px; }
+  .chk-upload-text { font-size: 13px; font-weight: 600; }
+  .chk-upload-sub { font-size: 11px; color: #6b7280; margin-top: 3px; }
+  .chk-file-preview { display: flex; align-items: center; gap: 10px; text-align: left; }
+  .chk-file-icon-box { width: 40px; height: 40px; background: rgba(37,99,235,.1); border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+  .chk-file-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+  .chk-file-size { font-size: 11px; color: #6b7280; }
+  .chk-file-remove { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 7px; color: #dc2626; margin-left: auto; flex-shrink: 0; font-size: 16px; transition: background .2s; }
+  .chk-trust-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 5px 10px; }
+  .chk-success-circle { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #22c55e, #16a34a); display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 16px; box-shadow: 0 4px 20px rgba(22,163,74,.3); color: white; }
+  .chk-conf-number { font-size: 18px; font-weight: 800; letter-spacing: 2px; color: #2563eb; background: #eff6ff; padding: 8px 18px; border-radius: 99px; display: inline-block; }
+  .chk-sticky-bar { position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: rgba(255,255,255,.94); backdrop-filter: blur(16px); border-top: 1px solid #e8eaed; box-shadow: 0 -4px 20px rgba(0,0,0,.06); z-index: 40; border-radius: 0 0 20px 20px; }
+  .chk-sticky-inner { max-width: 480px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .chk-sticky-total-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #6b7280; }
+  .chk-sticky-total-amount { font-size: 20px; font-weight: 800; color: #111827; }
+  .chk-step-screen { display: none; }
+  .chk-step-screen.active { display: block; }
+  .chk-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .chk-dimmed { opacity: .4; pointer-events: none; filter: grayscale(.5); transition: opacity .3s; }
+  .chk-section-num { width: 20px; height: 20px; border-radius: 50%; background: rgba(37,99,235,.15); color: #2563eb; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .chk-section-title { font-size: 13px; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -593,11 +700,11 @@
   </div>
   <!-- Hero counters strip -->
   <div class="hero-stats">
-    <div class="hstat"><span class="hnum" data-target="1200">0</span><span class="hunit">+</span><span class="hlabel">productos en stock</span></div>
+    <div class="hstat"><span class="hnum" data-target="1200">1.200</span><span class="hunit">+</span><span class="hlabel">productos en stock</span></div>
     <div class="hstat-divider"></div>
-    <div class="hstat"><span class="hnum" data-target="850">0</span><span class="hunit">+</span><span class="hlabel">clientes activos</span></div>
+    <div class="hstat"><span class="hnum" data-target="850">850</span><span class="hunit">+</span><span class="hlabel">clientes activos</span></div>
     <div class="hstat-divider"></div>
-    <div class="hstat"><span class="hnum" data-target="24">0</span><span class="hunit">h</span><span class="hlabel">tiempo de respuesta</span></div>
+    <div class="hstat"><span class="hnum" data-target="24">24</span><span class="hunit">h</span><span class="hlabel">tiempo de respuesta</span></div>
   </div>
 </section>
 
@@ -1061,7 +1168,8 @@
   <div class="dhead"><h3>Tu carrito</h3><button class="close" id="closeCart" aria-label="Cerrar">✕</button></div>
   <div class="shipbar"><div class="msg" id="shipMsg"></div><div class="track"><div class="fill" id="shipFill"></div></div></div>
   <div class="ditems" id="ditems"></div>
-  <div class="dfoot"><div class="row"><span class="lbl">Subtotal</span><span class="amt" id="subtotal">$0.00</span></div><button class="btn btn-green">Ir a pagar</button><div class="modehint">Viendo precios de <b id="modeHint">detal</b></div></div>
+  <div class="dfoot"><div class="row"><span class="lbl">Subtotal</span><span class="amt" id="subtotal">$0.00</span></div><button class="btn btn-green" id="startCheckoutBtn">Proceder al pago</button><div class="modehint">Viendo precios de <b id="modeHint">detal</b></div></div>
+</aside>
 </aside>
 
 <!-- QUICKVIEW MODAL -->
@@ -1127,6 +1235,463 @@
 
 <div class="toast" id="toast"><span class="d">✓</span><span id="toastMsg">Agregado al carrito</span></div>
 
+<!-- ═══════════════════════════════════════════
+     CHECKOUT MODAL OVERLAY
+════════════════════════════════════════════ -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-modal-card">
+    <button class="checkout-close-x" id="closeCheckoutBtn" aria-label="Cerrar checkout">✕</button>
+    <header class="chk-header">
+      <div class="chk-header-inner">
+        <div class="chk-header-top">
+          <span class="chk-header-title">Checkout</span>
+          <div class="chk-header-total">
+            <div class="chk-header-total-label">Total</div>
+            <div class="chk-header-total-amount" id="header-total">$0</div>
+          </div>
+        </div>
+        <div class="chk-progress" id="progress-bar">
+          <div class="chk-progress-step">
+            <div class="chk-progress-bar active" id="pb-0"></div>
+            <div class="chk-progress-label active" id="pl-0">Entrega</div>
+          </div>
+          <div class="chk-progress-step">
+            <div class="chk-progress-bar" id="pb-1"></div>
+            <div class="chk-progress-label" id="pl-1">Datos</div>
+          </div>
+          <div class="chk-progress-step">
+            <div class="chk-progress-bar" id="pb-2"></div>
+            <div class="chk-progress-label" id="pl-2">Pago</div>
+          </div>
+          <div class="chk-progress-step">
+            <div class="chk-progress-bar" id="pb-3"></div>
+            <div class="chk-progress-label" id="pl-3">Listo</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="chk-main">
+      <!-- STEP 1: ENTREGA -->
+      <div class="chk-step-screen active fade-up" id="step-entrega">
+        <div class="chk-step-title">¿Cómo recibes tu pedido?</div>
+        <div class="chk-step-sub">Elige la modalidad y completa los detalles de entrega</div>
+
+        <!-- Delivery Local -->
+        <div class="chk-card chk-card-interactive" id="mode-local" onclick="selectMode('local')">
+          <div class="flex items-center gap-3">
+            <div class="chk-mode-icon">🏍️</div>
+            <div class="flex-1">
+              <div class="chk-mode-title">Delivery Local</div>
+              <div class="chk-mode-desc">Te lo llevamos a tu dirección</div>
+              <div class="chk-mode-badge">30–45 min</div>
+            </div>
+            <div class="chk-radio" id="radio-local"></div>
+          </div>
+          <div class="accordion-body" id="body-local">
+            <div style="padding-top:16px; border-top:1px solid #e8eaed; margin-top:14px;">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="chk-section-num">1</div>
+                <span class="chk-section-title">¿En qué ciudad te encuentras?</span>
+              </div>
+              <div class="chk-input-group">
+                <select class="chk-input" id="city-select" onchange="onCityChange()">
+                  <option value="">Selecciona tu ciudad</option>
+                  <option value="caracas">Caracas</option>
+                  <option value="valencia">Valencia</option>
+                </select>
+                <div class="text-xs text-muted mt-1">Si no ves tu ciudad, el delivery local no está disponible allí.</div>
+              </div>
+              <div id="zone-section" class="chk-dimmed">
+                <div class="flex items-center gap-2 mb-2 mt-4">
+                  <div class="chk-section-num">2</div>
+                  <span class="chk-section-title">¿En qué zona?</span>
+                </div>
+                <div class="chk-input-group">
+                  <select class="chk-input" id="zone-select" onchange="onZoneChange()">
+                    <option value="">Selecciona la zona</option>
+                  </select>
+                </div>
+              </div>
+              <div id="address-section" class="chk-dimmed">
+                <div class="flex items-center gap-2 mb-2 mt-4">
+                  <div class="chk-section-num">3</div>
+                  <span class="chk-section-title">Tu dirección exacta</span>
+                </div>
+                <div class="chk-input-group">
+                  <input class="chk-input" type="text" id="local-address" placeholder="Calle, edificio, apto..." oninput="checkLocalReady()" />
+                </div>
+                <div class="chk-input-group">
+                  <label class="chk-input-label">Punto de referencia (opcional)</label>
+                  <input class="chk-input" type="text" id="local-ref" placeholder="Ej: frente al Metro, torre azul..." />
+                </div>
+                <div id="local-summary" class="chk-summary-box hidden fade-up">
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">📍 Zona</span>
+                    <span class="chk-summary-value" id="sum-zone">—</span>
+                  </div>
+                  <div class="chk-summary-divider"></div>
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">⏱ ETA</span>
+                    <span class="chk-summary-value">30–45 min</span>
+                  </div>
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">💲 Costo</span>
+                    <span class="chk-summary-value text-primary" id="sum-cost">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Envío Nacional -->
+        <div class="chk-card chk-card-interactive mt-2" id="mode-national" onclick="selectMode('national')">
+          <div class="flex items-center gap-3">
+            <div class="chk-mode-icon">📦</div>
+            <div class="flex-1">
+              <div class="chk-mode-title">Envío Nacional</div>
+              <div class="chk-mode-desc">MRW, Zoom, Tealca, Domesa</div>
+              <div class="chk-mode-badge">3–5 días hábiles</div>
+            </div>
+            <div class="chk-radio" id="radio-national"></div>
+          </div>
+          <div class="accordion-body" id="body-national">
+            <div style="padding-top:16px; border-top:1px solid #e8eaed; margin-top:14px;">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="chk-section-num">1</div>
+                <span class="chk-section-title">Elige empresa de transporte</span>
+              </div>
+              <div class="chk-grid2" style="margin-bottom:16px;">
+                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-MRW" onclick="selectTransport('MRW')">
+                  <div class="chk-radio" id="radio-tr-MRW" style="margin-bottom:6px;"></div>
+                  <div style="font-size:13px;font-weight:700;">MRW</div>
+                  <div style="font-size:11px;color:#6b7280;">2–3 días</div>
+                </div>
+                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Zoom" onclick="selectTransport('Zoom')">
+                  <div class="chk-radio" id="radio-tr-Zoom" style="margin-bottom:6px;"></div>
+                  <div style="font-size:13px;font-weight:700;">Zoom</div>
+                  <div style="font-size:11px;color:#6b7280;">24–48 h</div>
+                </div>
+                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Tealca" onclick="selectTransport('Tealca')">
+                  <div class="chk-radio" id="radio-tr-Tealca" style="margin-bottom:6px;"></div>
+                  <div style="font-size:13px;font-weight:700;">Tealca</div>
+                  <div style="font-size:11px;color:#6b7280;">3–4 días</div>
+                </div>
+                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Domesa" onclick="selectTransport('Domesa')">
+                  <div class="chk-radio" id="radio-tr-Domesa" style="margin-bottom:6px;"></div>
+                  <div style="font-size:13px;font-weight:700;">Domesa</div>
+                  <div style="font-size:11px;color:#6b7280;">3–5 días</div>
+                </div>
+              </div>
+              <div id="nat-dest-section" class="chk-dimmed">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="chk-section-num">2</div>
+                  <span class="chk-section-title">Destino del envío</span>
+                </div>
+                <div class="chk-input-group">
+                  <select class="chk-input" id="nat-state" onchange="onNatStateChange()">
+                    <option value="">Selecciona el Estado</option>
+                    <option>Amazonas</option><option>Anzoátegui</option><option>Apure</option>
+                    <option>Aragua</option><option>Barinas</option><option>Bolívar</option>
+                    <option>Carabobo</option><option>Cojedes</option><option>Delta Amacuro</option>
+                    <option>Distrito Capital</option><option>Falcón</option><option>Guárico</option>
+                    <option>Lara</option><option>Mérida</option><option>Miranda</option>
+                    <option>Monagas</option><option>Nueva Esparta</option><option>Portuguesa</option>
+                    <option>Sucre</option><option>Táchira</option><option>Trujillo</option>
+                    <option>Vargas</option><option>Yaracuy</option><option>Zulia</option>
+                  </select>
+                </div>
+                <div id="nat-city-wrap" class="chk-dimmed chk-input-group">
+                  <select class="chk-input" id="nat-city" onchange="onNatCityChange()">
+                    <option value="">Selecciona la Ciudad</option>
+                  </select>
+                </div>
+                <div id="nat-branch-wrap" class="chk-dimmed chk-input-group">
+                  <select class="chk-input" id="nat-branch" onchange="onNatBranchChange()">
+                    <option value="">Selecciona la Sucursal</option>
+                    <option>Agencia Principal</option>
+                    <option>Agencia Norte</option>
+                    <option>Agencia Sur</option>
+                  </select>
+                </div>
+                <div id="nat-summary" class="chk-summary-box hidden fade-up">
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">📦 Empresa</span>
+                    <span class="chk-summary-value" id="sum-transport">—</span>
+                  </div>
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">📍 Destino</span>
+                    <span class="chk-summary-value" id="sum-dest">—</span>
+                  </div>
+                  <div class="chk-summary-divider"></div>
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">🚚 Modalidad</span>
+                    <span class="chk-summary-value text-primary">Cobro a destino</span>
+                  </div>
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">⏱ ETA</span>
+                    <span class="chk-summary-value" id="sum-eta">3–5 días hábiles</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Retiro en Tienda -->
+        <div class="chk-card chk-card-interactive mt-2" id="mode-pickup" onclick="selectMode('pickup')">
+          <div class="flex items-center gap-3">
+            <div class="chk-mode-icon">🏪</div>
+            <div class="flex-1">
+              <div class="chk-mode-title">Retiro en Tienda</div>
+              <div class="chk-mode-desc">Recoge en nuestra sede</div>
+              <div class="chk-mode-badge">Gratis</div>
+            </div>
+            <div class="chk-radio" id="radio-pickup"></div>
+          </div>
+          <div class="accordion-body" id="body-pickup">
+            <div style="padding-top:16px; border-top:1px solid #e8eaed; margin-top:14px;">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="chk-section-num">1</div>
+                <span class="chk-section-title">Selecciona la tienda</span>
+              </div>
+              <div id="stores-list">
+                <div class="chk-card chk-card-interactive" style="margin-bottom:10px;" id="store-Chacao" onclick="selectStore('Chacao')">
+                  <div class="flex items-center gap-3">
+                    <div class="chk-radio" id="radio-store-Chacao"></div>
+                    <div class="flex-1">
+                      <div style="font-size:13px;font-weight:700;">Sede Chacao</div>
+                      <div style="font-size:11px;color:#6b7280;">Av. Francisco de Miranda</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chk-card chk-card-interactive" style="margin-bottom:10px;" id="store-LasMercedes" onclick="selectStore('LasMercedes')">
+                  <div class="flex items-center gap-3">
+                    <div class="chk-radio" id="radio-store-LasMercedes"></div>
+                    <div class="flex-1">
+                      <div style="font-size:13px;font-weight:700;">Sede Las Mercedes</div>
+                      <div style="font-size:11px;color:#6b7280;">Calle Madrid</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chk-card chk-card-interactive" id="store-LaCastellana" onclick="selectStore('LaCastellana')">
+                  <div class="flex items-center gap-3">
+                    <div class="chk-radio" id="radio-store-LaCastellana"></div>
+                    <div class="flex-1">
+                      <div style="font-size:13px;font-weight:700;">Sede La Castellana</div>
+                      <div style="font-size:11px;color:#6b7280;">Av. Principal</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="pickup-pay-section" class="chk-dimmed" style="margin-top:16px;">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="chk-section-num">2</div>
+                  <span class="chk-section-title">¿Cómo deseas pagar?</span>
+                </div>
+                <div class="chk-grid2">
+                  <div class="chk-card chk-card-interactive" style="padding:12px;" id="ppay-online" onclick="selectPickupPay('online')">
+                    <div class="chk-radio" id="radio-ppay-online" style="margin-bottom:6px;"></div>
+                    <div style="font-size:13px;font-weight:700;">💳 Pago Anticipado</div>
+                    <div style="font-size:11px;color:#6b7280;margin-top:3px;">Paga ahora y retira</div>
+                  </div>
+                  <div class="chk-card chk-card-interactive" style="padding:12px;" id="ppay-store" onclick="selectPickupPay('store')">
+                    <div class="chk-radio" id="radio-ppay-store" style="margin-bottom:6px;"></div>
+                    <div style="font-size:13px;font-weight:700;">👛 Pagar en Tienda</div>
+                    <div style="font-size:11px;color:#6b7280;margin-top:3px;">Reserva y paga al retirar</div>
+                  </div>
+                </div>
+                <div id="pickup-summary" class="chk-summary-box hidden fade-up">
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">🏪 Tienda</span>
+                    <span class="chk-summary-value" id="sum-store">—</span>
+                  </div>
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">🕐 Horario</span>
+                    <span class="chk-summary-value">Lun–Sáb 9am–6pm</span>
+                  </div>
+                  <div class="chk-summary-divider"></div>
+                  <div class="chk-summary-row">
+                    <span class="chk-summary-label">💲 Costo envío</span>
+                    <span class="chk-summary-value text-success">Gratis</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: DATOS -->
+      <div class="chk-step-screen fade-up" id="step-datos">
+        <div class="chk-step-title">Tus datos</div>
+        <div class="chk-step-sub">Completa tu información para continuar</div>
+        <div class="chk-card">
+          <div class="chk-input-group">
+            <label class="chk-input-label">Nombre completo *</label>
+            <input class="chk-input" type="text" id="d-name" placeholder="Ej: María González" />
+          </div>
+          <div class="chk-input-group">
+            <label class="chk-input-label">Cédula / RIF *</label>
+            <input class="chk-input" type="text" id="d-id" placeholder="Ej: V-12345678" />
+          </div>
+          <div class="chk-input-group">
+            <label class="chk-input-label">Teléfono WhatsApp *</label>
+            <input class="chk-input" type="tel" id="d-phone" placeholder="Ej: 0414-1234567" />
+          </div>
+          <div class="chk-input-group" style="margin-bottom:0;">
+            <label class="chk-input-label">Correo electrónico *</label>
+            <input class="chk-input" type="email" id="d-email" placeholder="Ej: nombre@email.com" />
+          </div>
+          <div class="text-error hidden" id="datos-error" style="color:#dc2626;font-size:12px;margin-top:6px;">Por favor completa todos los campos obligatorios.</div>
+        </div>
+        <div style="margin-top:12px; display:flex; justify-content:center;">
+          <div class="chk-trust-badge">🔒 Datos protegidos y seguros</div>
+        </div>
+      </div>
+
+      <!-- STEP 3: PAGO -->
+      <div class="chk-step-screen fade-up" id="step-pago">
+        <div class="chk-step-title">Método de pago</div>
+        <div class="chk-step-sub">Selecciona cómo deseas pagar</div>
+
+        <div class="chk-seg">
+          <button class="chk-seg-btn active" id="cur-USD" onclick="setCurrency('USD')">USD $</button>
+          <button class="chk-seg-btn" id="cur-VES" onclick="setCurrency('VES')">VES Bs.</button>
+        </div>
+
+        <div id="methods-USD">
+          <div class="chk-card chk-card-interactive" id="pm-zelle" onclick="selectMethod('zelle')">
+            <div class="flex items-center gap-3">
+              <div class="chk-radio" id="radio-zelle"></div>
+              <div class="flex-1">
+                <div style="font-weight:700;font-size:14px;">💵 Zelle</div>
+                <div style="font-size:11px;color:#6b7280;margin-top:2px;">Transferencia en dólares</div>
+              </div>
+            </div>
+          </div>
+          <div class="chk-card chk-card-interactive mt-2" id="pm-divisas" onclick="selectMethod('divisas')">
+            <div class="flex items-center gap-3">
+              <div class="chk-radio" id="radio-divisas"></div>
+              <div class="flex-1">
+                <div style="font-weight:700;font-size:14px;">💴 Divisas en Efectivo</div>
+                <div style="font-size:11px;color:#6b7280;margin-top:2px;">USD/EUR al recibir</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="methods-VES" class="hidden">
+          <div class="chk-card chk-card-interactive" id="pm-pagomovil" onclick="selectMethod('pagomovil')">
+            <div class="flex items-center gap-3">
+              <div class="chk-radio" id="radio-pagomovil"></div>
+              <div class="flex-1">
+                <div style="font-weight:700;font-size:14px;">📱 Pago Móvil</div>
+                <div style="font-size:11px;color:#6b7280;margin-top:2px;">Banco a banco por teléfono</div>
+              </div>
+            </div>
+          </div>
+          <div class="chk-card chk-card-interactive mt-2" id="pm-transferencia" onclick="selectMethod('transferencia')">
+            <div class="flex items-center gap-3">
+              <div class="chk-radio" id="radio-transferencia"></div>
+              <div class="flex-1">
+                <div style="font-weight:700;font-size:14px;">🏦 Transferencia</div>
+                <div style="font-size:11px;color:#6b7280;margin-top:2px;">A cuenta corriente o de ahorro</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="pay-instructions" class="hidden fade-up" style="margin-top:16px;">
+          <div class="chk-card" style="background:#f8f9fb;">
+            <div style="font-weight:700;font-size:13px;margin-bottom:12px;">ℹ️ Instrucciones de pago</div>
+            <div class="chk-pay-row chk-pay-amount">
+              <div><div class="chk-pay-label">Monto a pagar</div><div class="chk-pay-value" id="pay-amount-val">$0</div></div>
+              <button class="chk-copy-btn" onclick="copyText(document.getElementById('pay-amount-val').innerText.replace(/[^0-9.,]/g,''), this)">📋</button>
+            </div>
+            <div id="pay-details" style="margin-top:8px;"></div>
+            <div style="font-size:11px;color:#6b7280;text-align:center;margin-top:12px;">Realiza el pago y reporta los datos a continuación.</div>
+          </div>
+
+          <div class="chk-card" style="margin-top:12px;">
+            <div style="font-weight:700;font-size:13px;margin-bottom:12px;">📄 Reportar pago</div>
+            <div class="chk-input-group">
+              <label class="chk-input-label">Comprobante de pago *</label>
+              <div class="chk-upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+                <div id="upload-empty">
+                  <div class="chk-upload-icon">☁️</div>
+                  <div class="chk-upload-text">Toca para subir tu capture</div>
+                  <div class="chk-upload-sub">JPG, PNG, PDF</div>
+                </div>
+                <div class="chk-file-preview hidden" id="file-preview">
+                  <div class="chk-file-icon-box">🖼️</div>
+                  <div style="min-width:0;flex:1;">
+                    <div class="chk-file-name" id="file-name">archivo.jpg</div>
+                    <div class="chk-file-size" id="file-size">120 KB</div>
+                  </div>
+                  <button class="chk-file-remove" onclick="removeFile(event)">✕</button>
+                </div>
+                <input type="file" id="file-input" class="hidden" accept="image/*,.pdf" onchange="handleFile(this)" />
+              </div>
+            </div>
+            <div class="chk-input-group">
+              <label class="chk-input-label">Número de Referencia (Opcional)</label>
+              <input class="chk-input" type="text" inputmode="numeric" id="pay-ref" placeholder="Ej: 123456" />
+            </div>
+            <div class="chk-input-group" style="margin-bottom:0;">
+              <label class="chk-input-label">Fecha del pago</label>
+              <input class="chk-input" type="date" id="pay-date" />
+            </div>
+          </div>
+
+          <div style="margin-top:16px;display:flex;justify-content:center;">
+            <button class="chk-btn-primary btn-sm" style="width:auto;padding:13px 40px;" id="confirm-pay-btn" onclick="goToConfirmacion()" disabled>Confirmar Pago</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; justify-content:center;">
+          <div class="chk-trust-badge">🔐 Pago 100% seguro y verificado</div>
+        </div>
+      </div>
+
+      <!-- STEP 4: CONFIRMACION -->
+      <div class="chk-step-screen fade-up" id="step-confirmacion">
+        <div style="text-align:center;padding:30px 0 20px;">
+          <div class="chk-success-circle">✓</div>
+          <div style="font-size:22px;font-weight:800;margin-bottom:6px;">¡Pedido enviado!</div>
+          <div style="font-size:14px;color:#6b7280;margin-bottom:16px;">Tu pedido fue recibido y está siendo procesado</div>
+          <div class="chk-conf-number" id="conf-number">INF-123456</div>
+        </div>
+        <div class="chk-card" style="margin-top:16px;">
+          <div style="font-weight:700;font-size:13px;margin-bottom:12px;">📋 Resumen del pedido</div>
+          <div class="chk-summary-row"><span class="chk-summary-label">📦 Productos</span><span class="chk-summary-value" id="conf-products">—</span></div>
+          <div class="chk-summary-row mt-2"><span class="chk-summary-label">🚚 Entrega</span><span class="chk-summary-value" id="conf-delivery">—</span></div>
+          <div class="chk-summary-row mt-2"><span class="chk-summary-label">💳 Método de pago</span><span class="chk-summary-value" id="conf-method">—</span></div>
+          <hr class="divider" style="border:none;border-top:1px solid #e8eaed;margin:12px 0;">
+          <div class="chk-summary-row"><span class="chk-summary-label" style="font-weight:700;">Total pagado</span><span class="chk-summary-value text-primary" id="conf-total" style="color:#2563eb;font-size:16px;font-weight:800;">$0</span></div>
+        </div>
+        <div style="margin-top:20px;text-align:center;font-size:13px;color:#6b7280;">
+          Te notificaremos por WhatsApp cuando tu pedido esté en camino.<br/>
+          <span style="font-weight:700;color:#111827;">¡Gracias por comprar en Infaplastic!</span>
+        </div>
+        <button class="chk-btn-primary mt-6" style="margin-top:20px;" onclick="resetCheckout()">Finalizar y volver al inicio</button>
+      </div>
+
+    </main>
+
+    <!-- STICKY BOTTOM BAR IN CHECKOUT -->
+    <div class="chk-sticky-bar" id="sticky-bar">
+      <div class="chk-sticky-inner">
+        <div>
+          <div class="chk-sticky-total-label">Total a pagar</div>
+          <div class="chk-sticky-total-amount" id="sticky-total">$0</div>
+        </div>
+        <button class="chk-btn-primary chk-sticky-btn" id="sticky-btn" style="width:auto;padding:12px 24px;font-size:14px;" onclick="handleContinue()">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   var mode='detal', FREE=50, MEMBER=5, RATE=0.22, cart=[];
@@ -1180,7 +1745,6 @@
     var items=document.getElementById('ditems'),count=0,sub=0;
     cart.forEach(function(i){count+=i.qty;sub+=i.price*i.qty});
     document.getElementById('cartCount').textContent=count;
-    document.getElementById('mCartCount').textContent=count;
     document.querySelectorAll('.m-cart-count').forEach(function(el){el.textContent=count});
     document.getElementById('subtotal').textContent=fmt(sub);
     if(!cart.length){
@@ -1214,6 +1778,8 @@
   document.getElementById('openCart').addEventListener('click',openCart);
   var mFloatBtn = document.getElementById('mFloatBtn');
   if(mFloatBtn) mFloatBtn.addEventListener('click',openCart);
+  var mFloatBar = document.getElementById('mobileCartFloat');
+  if(mFloatBar) mFloatBar.addEventListener('click',openCart);
   document.getElementById('closeCart').addEventListener('click',closeCart);
 
   // MOBILE NAV DRAWER HANDLERS
@@ -1247,6 +1813,360 @@
     closeCart();
     closeMobileNav();
   });
+
+  /* ─── CHECKOUT LOGIC & HANDLERS ────────────────── */
+  window.STATE = {
+    step: 'entrega', mode: null, transport: null, store: null, pickupPay: null,
+    currency: 'USD', method: null, hasFile: false, city: null, zone: null,
+    natState: null, natCity: null, natBranch: null
+  };
+
+  const EXCHANGE_RATE = 567.68;
+  const ZONES = {
+    caracas: [
+      { id: 'chacao', name: 'Chacao', cost: 2 },
+      { id: 'altamira', name: 'Altamira', cost: 2 },
+      { id: 'las-mercedes', name: 'Las Mercedes', cost: 4 },
+      { id: 'la-castellana', name: 'La Castellana', cost: 4 },
+      { id: 'la-florida', name: 'La Florida', cost: 5 },
+      { id: 'macaracuay', name: 'Macaracuay', cost: 6 }
+    ],
+    valencia: [
+      { id: 'san-diego', name: 'San Diego', cost: 3 },
+      { id: 'naguanagua', name: 'Naguanagua', cost: 4 },
+      { id: 'el-trigal', name: 'El Trigal', cost: 4 }
+    ]
+  };
+  const NAT_CITIES = {
+    'Distrito Capital': ['Caracas'],
+    'Miranda': ['Los Teques', 'Guarenas', 'Guatire'],
+    'Carabobo': ['Valencia', 'Puerto Cabello', 'Guacara'],
+    'Zulia': ['Maracaibo', 'San Francisco', 'Cabimas'],
+    'Lara': ['Barquisimeto', 'Cabudare'],
+    'Aragua': ['Maracay', 'Cagua'],
+    'Táchira': ['San Cristóbal', 'San Antonio'],
+    'Bolívar': ['Ciudad Bolívar', 'Puerto Ordaz'],
+    'Anzoátegui': ['Barcelona', 'Puerto La Cruz'],
+    'Mérida': ['Mérida', 'El Vigía']
+  };
+  const PAY_DETAILS = {
+    zelle:        [{ label:'Email Zelle', val:'pagos@infaplastic.com' }, { label:'A nombre de', val:'Infaplastic LLC' }],
+    divisas:      [],
+    pagomovil:    [{ label:'Banco', val:'Banesco (0134)' }, { label:'Teléfono', val:'0412-1234567' }, { label:'Cédula/RIF', val:'J-50123456-7' }],
+    transferencia:[{ label:'Banco', val:'Banesco' }, { label:'Cuenta', val:'0134-0000-00-0000000000' }, { label:'A nombre de', val:'Infaplastic C.A.' }]
+  };
+  const STORE_NAMES = { Chacao: 'Sede Chacao', LasMercedes: 'Sede Las Mercedes', LaCastellana: 'Sede La Castellana' };
+  const TRANSPORT_ETA = { MRW:'2–3 días', Zoom:'24–48 h', Tealca:'3–4 días', Domesa:'3–5 días' };
+
+  let shippingCost = 0;
+
+  function cartSubtotal() { return cart.reduce((s,i) => s + i.price * i.qty, 0); }
+  function cartTotal() { return cartSubtotal() + shippingCost; }
+
+  window.fmtCur = function(usd) {
+    if (STATE.currency === 'VES') {
+      return new Intl.NumberFormat('es-VE', { style:'currency', currency:'VES', minimumFractionDigits:2 }).format(usd * EXCHANGE_RATE);
+    }
+    return '$' + usd.toLocaleString('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 });
+  };
+
+  window.updateTotals = function() {
+    const t = fmtCur(cartTotal());
+    var ht = document.getElementById('header-total'); if(ht) ht.textContent = t;
+    var st = document.getElementById('sticky-total'); if(st) st.textContent = t;
+    var pa = document.getElementById('pay-amount-val'); if(pa) pa.textContent = t;
+  };
+
+  const STEPS = ['entrega','datos','pago','confirmacion'];
+  window.updateProgress = function() {
+    const idx = STEPS.indexOf(STATE.step);
+    STEPS.forEach((s, i) => {
+      var pb = document.getElementById('pb-' + i); if(pb) pb.className = 'chk-progress-bar' + (i <= idx ? ' active' : '');
+      var pl = document.getElementById('pl-' + i); if(pl) pl.className = 'chk-progress-label' + (i <= idx ? ' active' : '');
+    });
+    var sb = document.getElementById('sticky-bar'); if(sb) sb.style.display = STATE.step === 'confirmacion' ? 'none' : '';
+    var prb = document.getElementById('progress-bar'); if(prb) prb.style.display = STATE.step === 'confirmacion' ? 'none' : '';
+  };
+
+  window.goStep = function(s) {
+    var curEl = document.getElementById('step-' + STATE.step); if(curEl) curEl.className = 'chk-step-screen';
+    STATE.step = s;
+    const el = document.getElementById('step-' + s);
+    if(el){
+      el.className = 'chk-step-screen active fade-up';
+      el.style.animation = 'none';
+      requestAnimationFrame(() => { el.style.animation = ''; });
+    }
+    updateProgress();
+    var modal = document.querySelector('.checkout-modal-card');
+    if(modal) modal.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  window.handleContinue = function() {
+    if (STATE.step === 'entrega') {
+      if (!STATE.mode) { alert('Por favor selecciona una modalidad de entrega.'); return; }
+      if (STATE.mode === 'local' && (!STATE.city || !STATE.zone || !document.getElementById('local-address').value.trim())) {
+        alert('Por favor completa todos los datos de entrega local.'); return;
+      }
+      if (STATE.mode === 'national' && (!STATE.transport || !STATE.natBranch)) {
+        alert('Por favor completa todos los datos de envío nacional.'); return;
+      }
+      if (STATE.mode === 'pickup' && (!STATE.store || !STATE.pickupPay)) {
+        alert('Por favor selecciona tienda y método de pago en tienda.'); return;
+      }
+      goStep('datos');
+    } else if (STATE.step === 'datos') {
+      const n = document.getElementById('d-name').value.trim();
+      const id = document.getElementById('d-id').value.trim();
+      const ph = document.getElementById('d-phone').value.trim();
+      const em = document.getElementById('d-email').value.trim();
+      if (!n || !id || !ph || !em) {
+        document.getElementById('datos-error').classList.remove('hidden'); return;
+      }
+      document.getElementById('datos-error').classList.add('hidden');
+      goStep('pago');
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('pay-date').value = today;
+    } else if (STATE.step === 'pago') {
+      goToConfirmacion();
+    }
+  };
+
+  window.selectMode = function(m) {
+    if (STATE.mode === m) return;
+    ['local','national','pickup'].forEach(x => {
+      var card = document.getElementById('mode-' + x); if(card) card.classList.remove('selected');
+      var rad = document.getElementById('radio-' + x); if(rad) { rad.classList.remove('selected'); rad.innerHTML = ''; }
+      var body = document.getElementById('body-' + x); if(body) body.classList.remove('open');
+    });
+    STATE.mode = m;
+    shippingCost = 0;
+    var targetCard = document.getElementById('mode-' + m); if(targetCard) targetCard.classList.add('selected');
+    var targetRad = document.getElementById('radio-' + m); if(targetRad) { targetRad.classList.add('selected'); targetRad.innerHTML = '<div class="chk-radio-dot"></div>'; }
+    var targetBody = document.getElementById('body-' + m); if(targetBody) targetBody.classList.add('open');
+    updateTotals();
+  };
+
+  window.onCityChange = function() {
+    STATE.city = document.getElementById('city-select').value;
+    STATE.zone = null;
+    const zoneEl = document.getElementById('zone-select');
+    zoneEl.innerHTML = '<option value="">Selecciona la zona</option>';
+    if (STATE.city && ZONES[STATE.city]) {
+      ZONES[STATE.city].forEach(z => {
+        const o = document.createElement('option');
+        o.value = z.id; o.textContent = z.name + ' — $' + z.cost;
+        zoneEl.appendChild(o);
+      });
+    }
+    document.getElementById('zone-section').classList.remove('chk-dimmed');
+    document.getElementById('address-section').classList.add('chk-dimmed');
+    document.getElementById('local-summary').classList.add('hidden');
+    shippingCost = 0; updateTotals();
+  };
+
+  window.onZoneChange = function() {
+    const zid = document.getElementById('zone-select').value;
+    if (!STATE.city || !zid) return;
+    const z = ZONES[STATE.city].find(x => x.id === zid);
+    STATE.zone = zid;
+    document.getElementById('address-section').classList.remove('chk-dimmed');
+    document.getElementById('sum-zone').textContent = z.name;
+    document.getElementById('sum-cost').textContent = '$' + z.cost;
+    shippingCost = z.cost; updateTotals();
+  };
+
+  window.checkLocalReady = function() {
+    const addr = document.getElementById('local-address').value.trim();
+    if (addr && STATE.zone) {
+      document.getElementById('local-summary').classList.remove('hidden');
+    }
+  };
+
+  window.selectTransport = function(t) {
+    STATE.transport = t;
+    Object.keys(TRANSPORT_ETA).forEach(x => {
+      var c = document.getElementById('tr-' + x); if(c) c.classList.remove('selected');
+      var r = document.getElementById('radio-tr-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
+    });
+    var trEl = document.getElementById('tr-' + t); if(trEl) trEl.classList.add('selected');
+    var radEl = document.getElementById('radio-tr-' + t); if(radEl) { radEl.classList.add('selected'); radEl.innerHTML = '<div class="chk-radio-dot"></div>'; }
+    document.getElementById('nat-dest-section').classList.remove('chk-dimmed');
+    updateNatSummary();
+  };
+
+  window.onNatStateChange = function() {
+    STATE.natState = document.getElementById('nat-state').value;
+    STATE.natCity = null; STATE.natBranch = null;
+    const cityEl = document.getElementById('nat-city');
+    cityEl.innerHTML = '<option value="">Selecciona la Ciudad</option>';
+    if (STATE.natState && NAT_CITIES[STATE.natState]) {
+      NAT_CITIES[STATE.natState].forEach(c => {
+        const o = document.createElement('option'); o.value = c; o.textContent = c; cityEl.appendChild(o);
+      });
+    }
+    document.getElementById('nat-city-wrap').classList.remove('chk-dimmed');
+    document.getElementById('nat-branch-wrap').classList.add('chk-dimmed');
+    document.getElementById('nat-summary').classList.add('hidden');
+  };
+
+  window.onNatCityChange = function() {
+    STATE.natCity = document.getElementById('nat-city').value;
+    document.getElementById('nat-branch-wrap').classList.remove('chk-dimmed');
+  };
+
+  window.onNatBranchChange = function() {
+    STATE.natBranch = document.getElementById('nat-branch').value;
+    updateNatSummary();
+  };
+
+  function updateNatSummary() {
+    if (STATE.transport && STATE.natState && STATE.natCity && STATE.natBranch) {
+      document.getElementById('sum-transport').textContent = STATE.transport;
+      document.getElementById('sum-dest').textContent = STATE.natState + ', ' + STATE.natCity + ' (' + STATE.natBranch + ')';
+      document.getElementById('sum-eta').textContent = TRANSPORT_ETA[STATE.transport] || '3–5 días';
+      document.getElementById('nat-summary').classList.remove('hidden');
+    }
+  }
+
+  window.selectStore = function(s) {
+    STATE.store = s;
+    ['Chacao','LasMercedes','LaCastellana'].forEach(x => {
+      var c = document.getElementById('store-' + x); if(c) c.classList.remove('selected');
+      var r = document.getElementById('radio-store-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
+    });
+    var stEl = document.getElementById('store-' + s); if(stEl) stEl.classList.add('selected');
+    var radEl = document.getElementById('radio-store-' + s); if(radEl) { radEl.classList.add('selected'); radEl.innerHTML = '<div class="chk-radio-dot"></div>'; }
+    document.getElementById('pickup-pay-section').classList.remove('chk-dimmed');
+    updatePickupSummary();
+  };
+
+  window.selectPickupPay = function(p) {
+    STATE.pickupPay = p;
+    ['online','store'].forEach(x => {
+      var c = document.getElementById('ppay-' + x); if(c) c.classList.remove('selected');
+      var r = document.getElementById('radio-ppay-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
+    });
+    var pEl = document.getElementById('ppay-' + p); if(pEl) pEl.classList.add('selected');
+    var radEl = document.getElementById('radio-ppay-' + p); if(radEl) { radEl.classList.add('selected'); radEl.innerHTML = '<div class="chk-radio-dot"></div>'; }
+    updatePickupSummary();
+  };
+
+  function updatePickupSummary() {
+    if (STATE.store && STATE.pickupPay) {
+      document.getElementById('sum-store').textContent = STORE_NAMES[STATE.store];
+      document.getElementById('pickup-summary').classList.remove('hidden');
+    }
+  }
+
+  window.setCurrency = function(c) {
+    STATE.currency = c;
+    document.getElementById('cur-USD').className = 'chk-seg-btn' + (c === 'USD' ? ' active' : '');
+    document.getElementById('cur-VES').className = 'chk-seg-btn' + (c === 'VES' ? ' active' : '');
+    document.getElementById('methods-USD').className = c === 'USD' ? '' : 'hidden';
+    document.getElementById('methods-VES').className = c === 'VES' ? '' : 'hidden';
+    STATE.method = null;
+    document.getElementById('pay-instructions').classList.add('hidden');
+    updateTotals();
+  };
+
+  window.selectMethod = function(m) {
+    STATE.method = m;
+    ['zelle','divisas','pagomovil','transferencia'].forEach(x => {
+      var c = document.getElementById('pm-' + x); if(c) c.classList.remove('selected');
+      var r = document.getElementById('radio-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
+    });
+    var mEl = document.getElementById('pm-' + m); if(mEl) mEl.classList.add('selected');
+    var rEl = document.getElementById('radio-' + m); if(rEl) { rEl.classList.add('selected'); rEl.innerHTML = '<div class="chk-radio-dot"></div>'; }
+    
+    const details = PAY_DETAILS[m] || [];
+    const html = details.map(d => `
+      <div class="chk-pay-row">
+        <div><div class="chk-pay-label">${d.label}</div><div class="chk-pay-value">${d.val}</div></div>
+        <button class="chk-copy-btn" onclick="copyText('${d.val}', this)">📋</button>
+      </div>
+    `).join('');
+    document.getElementById('pay-details').innerHTML = html;
+    document.getElementById('pay-instructions').classList.remove('hidden');
+    checkPayReady();
+  };
+
+  window.handleFile = function(input) {
+    if (input.files && input.files[0]) {
+      const f = input.files[0];
+      STATE.hasFile = true;
+      document.getElementById('upload-empty').classList.add('hidden');
+      document.getElementById('file-preview').classList.remove('hidden');
+      document.getElementById('upload-zone').classList.add('has-file');
+      document.getElementById('file-name').textContent = f.name;
+      document.getElementById('file-size').textContent = (f.size / 1024).toFixed(0) + ' KB';
+      checkPayReady();
+    }
+  };
+
+  window.removeFile = function(e) {
+    e.stopPropagation();
+    STATE.hasFile = false;
+    document.getElementById('file-input').value = '';
+    document.getElementById('upload-empty').classList.remove('hidden');
+    document.getElementById('file-preview').classList.add('hidden');
+    document.getElementById('upload-zone').classList.remove('has-file');
+    checkPayReady();
+  };
+
+  function checkPayReady() {
+    const ok = (STATE.method === 'divisas') || (STATE.method && STATE.hasFile);
+    document.getElementById('confirm-pay-btn').disabled = !ok;
+  }
+
+  window.copyText = function(val, btn) {
+    navigator.clipboard.writeText(val).then(() => {
+      btn.innerText = '✓';
+      setTimeout(() => { btn.innerText = '📋'; }, 1800);
+    });
+  };
+
+  window.goToConfirmacion = function() {
+    const num = 'INF-' + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('conf-number').textContent = num;
+    document.getElementById('conf-products').textContent = cart.map(i => i.qty + 'x ' + i.name).join(', ') || '1x Pedido Infaplastic';
+    
+    let delText = 'Delivery Local';
+    if (STATE.mode === 'national') delText = 'Envío ' + (STATE.transport || 'Nacional');
+    if (STATE.mode === 'pickup') delText = 'Retiro en ' + (STORE_NAMES[STATE.store] || 'Tienda');
+    document.getElementById('conf-delivery').textContent = delText;
+    
+    const mNames = { zelle:'Zelle', divisas:'Efectivo Divisas', pagomovil:'Pago Móvil', transferencia:'Transferencia' };
+    document.getElementById('conf-method').textContent = mNames[STATE.method] || 'Pago confirmado';
+    document.getElementById('conf-total').textContent = fmtCur(cartTotal());
+    
+    goStep('confirmacion');
+  };
+
+  window.resetCheckout = function() {
+    closeCheckout();
+    cart = [];
+    renderCart();
+    STATE.step = 'entrega';
+    goStep('entrega');
+  };
+
+  window.openCheckout = function() {
+    closeCart();
+    closeMobileNav();
+    updateTotals();
+    document.getElementById('checkoutOverlay').classList.add('open');
+  };
+
+  window.closeCheckout = function() {
+    document.getElementById('checkoutOverlay').classList.remove('open');
+  };
+
+  var chkCloseBtn = document.getElementById('closeCheckoutBtn');
+  if(chkCloseBtn) chkCloseBtn.addEventListener('click', closeCheckout);
+
+  var startChkBtn = document.getElementById('startCheckoutBtn');
+  if(startChkBtn) startChkBtn.addEventListener('click', openCheckout);
 
   var tt;
   function toast(msg){var el=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){el.classList.remove('show')},1600)}
@@ -1345,30 +2265,22 @@
   (function(){
     var nums = document.querySelectorAll('.hnum');
     if(!nums.length) return;
-    var done = false;
     function animCount(el){
       var target = parseInt(el.dataset.target,10);
-      var duration = 1800;
+      if(isNaN(target)) return;
+      var duration = 1500;
       var start = null;
       function step(ts){
         if(!start) start = ts;
         var progress = Math.min((ts-start)/duration,1);
         var ease = 1-Math.pow(1-progress,3);
-        el.textContent = Math.round(ease*target).toLocaleString('es-VE');
+        var val = Math.round(ease*target);
+        el.textContent = val > 999 ? val.toLocaleString('es-VE') : val;
         if(progress<1) requestAnimationFrame(step);
-        else el.textContent = target.toLocaleString('es-VE');
       }
       requestAnimationFrame(step);
     }
-    var heroObs = new IntersectionObserver(function(entries){
-      if(entries[0].isIntersecting && !done){
-        done = true;
-        nums.forEach(function(el){ animCount(el); });
-        heroObs.disconnect();
-      }
-    },{threshold:0.4});
-    var heroStats = document.querySelector('.hero-stats');
-    if(heroStats) heroObs.observe(heroStats);
+    nums.forEach(function(el){ animCount(el); });
   })();
 
   /* ── STORIES SLIDESHOW ── */
@@ -1385,9 +2297,14 @@
     var sndBtn = document.getElementById('soundToggle');
     if(sndBtn){
       sndBtn.addEventListener('click', function(e){
+        e.preventDefault();
         e.stopPropagation();
         isMuted = !isMuted;
         vids.forEach(function(v){ v.muted = isMuted; });
+        if(vids[cur]){
+          vids[cur].muted = isMuted;
+          if(!isMuted) vids[cur].play().catch(function(){});
+        }
         var iconM = sndBtn.querySelector('.icon-muted');
         var iconU = sndBtn.querySelector('.icon-unmuted');
         if(iconM) iconM.style.display = isMuted ? 'block' : 'none';
@@ -1398,12 +2315,9 @@
     function goTo(idx){
       if(idx < 0) idx = total - 1;
       if(idx >= total) idx = 0;
-      // dots
       dots.forEach(function(d){ d.classList.remove('active'); });
       if(dots[idx]) dots[idx].classList.add('active');
-      // track slide
       track.style.transform = 'translateX(-' + (idx * 100) + '%)';
-      // pause all videos, play current
       vids.forEach(function(v){ v.pause(); v.currentTime = 0; });
       if(vids[idx]){
         vids[idx].muted = isMuted;
@@ -1414,14 +2328,12 @@
       cur = idx;
     }
 
-    // Advance to next story when video ends
     vids.forEach(function(v, i){
       v.addEventListener('ended', function(){
         if(i === cur) goTo(cur + 1);
       });
     });
 
-    // Dot clicks
     dots.forEach(function(d){
       d.addEventListener('click', function(e){
         e.stopPropagation();
@@ -1429,21 +2341,35 @@
       });
     });
 
-    // Touch swipe on viewport
     var vp = document.querySelector('.stories-viewport');
-    var touchX = null;
+    var startX = 0, startY = 0, distX = 0, distY = 0;
     if(vp){
-      vp.addEventListener('touchstart', function(e){ touchX = e.touches[0].clientX; }, {passive:true});
+      vp.addEventListener('touchstart', function(e){
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        distX = 0; distY = 0;
+      }, {passive:true});
+
+      vp.addEventListener('touchmove', function(e){
+        if(!startX) return;
+        distX = e.touches[0].clientX - startX;
+        distY = e.touches[0].clientY - startY;
+      }, {passive:true});
+
       vp.addEventListener('touchend', function(e){
-        if(touchX === null) return;
-        var dx = e.changedTouches[0].clientX - touchX;
-        touchX = null;
-        if(Math.abs(dx) > 40){ goTo(dx < 0 ? cur + 1 : cur - 1); }
+        if(Math.abs(distX) > 30 && Math.abs(distX) > Math.abs(distY)){
+          if(distX < 0){ goTo(cur + 1); }
+          else { goTo(cur - 1); }
+        }
+        startX = 0; startY = 0;
       });
-      // Click to advance
+
       vp.addEventListener('click', function(e){
-        if(e.target.closest('#soundToggle')) return;
-        goTo(cur + 1);
+        if(e.target.closest('#soundToggle') || e.target.closest('.sdot')) return;
+        if(Math.abs(distX) < 10){
+          goTo(cur + 1);
+        }
+        distX = 0;
       });
     }
 
