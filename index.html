@@ -733,7 +733,7 @@
         </button>
         <div class="stories-track" id="storiesTrack">
           <div class="story-slide">
-            <video class="story-vid" src="Videos/SaveClip.App_AQNaI8SvbD3TkMbM141rFRcy-OmLGuZmmBKp0E5c8w7wHzKhjqN8yP2ObO5QiKLhuHj3iLO7MvUiJnAltdx1f6W1KOnyI9jNmItqoLA.mp4" autoplay muted playsinline></video>
+            <video class="story-vid" src="Videos/SaveClip.App_AQNaI8SvbD3TkMbM141rFRcy-OmLGuZmmBKp0E5c8w7wHzKhjqN8yP2ObO5QiKLhuHj3iLO7MvUiJnAltdx1f6W1KOnyI9jNmItqoLA.mp4" muted playsinline></video>
             <div class="story-caption">🍽️ Para restaurantes y comedores</div>
           </div>
           <div class="story-slide">
@@ -2283,7 +2283,7 @@
     nums.forEach(function(el){ animCount(el); });
   })();
 
-  /* ── STORIES SLIDESHOW ── */
+  /* ── STORIES SLIDESHOW (Plays ONLY when section is visible on screen) ── */
   (function(){
     var track = document.getElementById('storiesTrack');
     if(!track) return;
@@ -2293,6 +2293,7 @@
     var total  = slides.length;
     var cur    = 0;
     var isMuted = true;
+    var isSectionVisible = false;
 
     var sndBtn = document.getElementById('soundToggle');
     if(sndBtn){
@@ -2301,7 +2302,7 @@
         e.stopPropagation();
         isMuted = !isMuted;
         vids.forEach(function(v){ v.muted = isMuted; });
-        if(vids[cur]){
+        if(vids[cur] && isSectionVisible){
           vids[cur].muted = isMuted;
           if(!isMuted) vids[cur].play().catch(function(){});
         }
@@ -2319,7 +2320,7 @@
       if(dots[idx]) dots[idx].classList.add('active');
       track.style.transform = 'translateX(-' + (idx * (100 / total)) + '%)';
       vids.forEach(function(v){ v.pause(); v.currentTime = 0; });
-      if(vids[idx]){
+      if(vids[idx] && isSectionVisible){
         vids[idx].muted = isMuted;
         vids[idx].currentTime = 0;
         var p = vids[idx].play();
@@ -2328,9 +2329,28 @@
       cur = idx;
     }
 
+    // IntersectionObserver: Play video ONLY when section is visible, PAUSE when scrolled away
+    var secObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          isSectionVisible = true;
+          if(vids[cur]){
+            vids[cur].muted = isMuted;
+            vids[cur].play().catch(function(){});
+          }
+        } else {
+          isSectionVisible = false;
+          vids.forEach(function(v){ v.pause(); });
+        }
+      });
+    }, { threshold: 0.25 });
+
+    var secEl = document.getElementById('stories');
+    if(secEl) secObs.observe(secEl);
+
     vids.forEach(function(v, i){
       v.addEventListener('ended', function(){
-        if(i === cur) goTo(cur + 1);
+        if(i === cur && isSectionVisible) goTo(cur + 1);
       });
     });
 
@@ -2372,8 +2392,6 @@
         distX = 0;
       });
     }
-
-    goTo(0);
   })();
 
 })();
