@@ -1693,6 +1693,11 @@
 
 <script>
 (function(){
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   var mode='detal', FREE=50, MEMBER=5, RATE=0.22, cart=[];
   var fmt=function(n){return '$'+n.toFixed(2)};
   var DESC={
