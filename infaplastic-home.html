@@ -245,11 +245,11 @@
   .campaign .r p{color:#cfd2ce;font-size:16px;margin-bottom:20px}
   .campaign .r .chip2{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--neon);border:1px solid #ffffff22;border-radius:100px;padding:7px 14px;margin-top:14px}
 
-  /* BUNDLES */
+  /* BUNDLES / KITS NO OVERLAP FIX */
   .bundles{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;width:100%}
   .bundle{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
-  .bundle .bhead{padding:22px;color:#fff;position:relative;font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:22px;line-height:1}
-  .bundle .bhead .bsave{position:absolute;top:14px;right:14px;background:var(--neon);color:var(--carbon);font-size:12px;padding:4px 10px;border-radius:8px;font-stretch:100%}
+  .bundle .bhead{padding:18px 20px;color:#fff;font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:20px;line-height:1.1;display:flex;flex-direction:column-reverse;align-items:flex-start;gap:8px;min-height:104px;justify-content:flex-end;position:relative}
+  .bundle .bhead .bsave{position:static;background:var(--neon);color:var(--carbon);font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:6px;font-stretch:100%;letter-spacing:.02em;display:inline-block}
   .bh-a{background:linear-gradient(135deg,#0ED100,#0a8f00)}.bh-b{background:linear-gradient(135deg,#3a3d38,#231F20)}
   .bh-c{background:linear-gradient(135deg,#7fe600,#0EAE00)}.bh-d{background:linear-gradient(135deg,#4A4B4C,#2a2b2b)}
   .bundle .binc{list-style:none;padding:18px 22px;display:grid;gap:9px;flex:1}
@@ -404,7 +404,8 @@
     .hero .cta-row .btn{width:100%}
     .sec-head{flex-direction:column;align-items:flex-start;gap:14px}
     .head-tools{width:100%;justify-content:space-between}
-    .tiles,.cards,.bundles{grid-template-columns:repeat(2,1fr)}
+    .tiles,.cards{grid-template-columns:repeat(2,1fr)}
+    .bundles{grid-template-columns:repeat(2,1fr);gap:14px}
     .res{grid-template-columns:1fr}
     .trust .wrap{grid-template-columns:repeat(2,1fr);gap:12px}
     .dual,.member .wrap,.savings .wrap,.b2b .wrap,.news .wrap{grid-template-columns:1fr;gap:26px}
@@ -425,6 +426,13 @@
     .trust .t svg{width:24px;height:24px}
     .trust .t b{font-size:13px;line-height:1.2}
     .trust .t span{font-size:11.5px;line-height:1.2;color:var(--grey)}
+
+    .bundles{grid-template-columns:repeat(2,1fr);gap:12px}
+    .bundle .bhead{padding:14px;font-size:15px;min-height:92px;gap:6px}
+    .bundle .bhead .bsave{font-size:10.5px;padding:3px 8px}
+    .bundle .binc{padding:14px;gap:7px}
+    .bundle .binc li{font-size:12px}
+    .bundle .bfoot{padding:0 14px 14px}
 
     .calc-card{padding:20px 16px}
     .savings .wrap{padding:44px 16px}
@@ -449,7 +457,8 @@
   }
 
   @media(max-width:400px){
-    .cards{grid-template-columns:1fr 1fr;gap:8px}
+    .cards,.bundles{grid-template-columns:1fr 1fr;gap:8px}
+    .bundle .bhead{padding:12px 10px;font-size:13.5px}
     .card .body{padding:10px 8px}
     .add{font-size:13px;padding:8px 4px}
   }
