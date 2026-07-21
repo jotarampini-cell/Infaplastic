@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infaplastic — Desechables reinventados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,600;100,700;100,800;125,800;125,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --carbon:#231F20;--neon:#83F700;--green-bright:#0ED100;--green-action:#0EAE00;--grey:#4A4B4C;
+    --paper:#FFFFFF;--paper-2:#F4F6F3;--tint:#F1FBEC;--line:#E3E7E0;
+    --radius:16px;--maxw:1220px;
+    --display:'Archivo','Arial Narrow',system-ui,sans-serif;
+    --body:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);color:var(--carbon);background:var(--paper);line-height:1.5;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  :focus-visible{outline:3px solid var(--green-action);outline-offset:2px;border-radius:4px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .display{font-family:var(--display);font-weight:900;font-stretch:125%;text-transform:uppercase;line-height:.92;letter-spacing:-.01em}
+  .eyebrow{font-family:var(--display);font-weight:800;font-stretch:125%;text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--green-action)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:14px 24px;border-radius:100px;cursor:pointer;border:2px solid transparent;transition:transform .18s,background .18s,color .18s,border-color .18s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-green{background:var(--green-action);color:#fff}.btn-green:hover{background:var(--green-bright)}
+  .btn-neon{background:var(--neon);color:var(--carbon)}.btn-neon:hover{background:#9dff33}
+  .btn-outline{background:transparent;border-color:var(--carbon);color:var(--carbon)}.btn-outline:hover{background:var(--carbon);color:#fff}
+  .btn-ghost-neon{background:transparent;border-color:var(--neon);color:var(--neon)}.btn-ghost-neon:hover{background:var(--neon);color:var(--carbon)}
+  .btn-sm{padding:10px 18px;font-size:14px}
+
+  /* HEADER */
+  .topstrip{background:var(--carbon);color:#cfd2ce;font-size:12.5px}
+  .topstrip .wrap{display:flex;align-items:center;justify-content:space-between;height:38px}
+  .topstrip strong{color:var(--neon);font-weight:600}
+  .topstrip .rt{display:flex;gap:20px;align-items:center}
+  .topstrip a:hover{color:#fff}
+  header.main{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  header.main .wrap{display:flex;align-items:center;gap:28px;height:72px}
+  .brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+  .brand svg{width:34px;height:auto}
+  .brand .word{font-family:var(--display);font-weight:900;font-stretch:125%;letter-spacing:.02em;font-size:20px;text-transform:uppercase}
+  nav.primary{display:flex;gap:26px;margin-left:8px}
+  nav.primary a{font-weight:500;font-size:15px;padding:6px 0;position:relative}
+  nav.primary a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--green-action);transition:width .2s}
+  nav.primary a:hover::after{width:100%}
+  .util{margin-left:auto;display:flex;align-items:center;gap:18px}
+  .util .ic{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;cursor:pointer;background:none;border:0;color:inherit}
+  .util .ic:hover{color:var(--green-action)}
+  .cart-btn{position:relative}
+  .cart-btn .dot{position:absolute;top:-8px;right:-10px;background:var(--green-action);color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;padding:0 4px;border-radius:9px;display:grid;place-items:center;transition:transform .16s}
+  .burger{display:none;flex-direction:column;gap:4px;cursor:pointer;background:none;border:0}
+  .burger span{width:22px;height:2px;background:var(--carbon)}
+
+  /* TICKER */
+  .ticker{background:var(--neon);color:var(--carbon);overflow:hidden;white-space:nowrap;border-bottom:1px solid #6ecf00}
+  .ticker .track{display:inline-flex;animation:scroll 28s linear infinite}
+  .ticker span{font-family:var(--display);font-weight:800;font-stretch:125%;text-transform:uppercase;font-size:13px;letter-spacing:.04em;padding:11px 26px;display:inline-flex;align-items:center}
+  .ticker .sep{color:var(--green-action);opacity:.6}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ticker:hover .track{animation-play-state:paused}
+
+  /* HERO */
+  .hero{background:var(--carbon);color:#fff;position:relative;overflow:hidden}
+  .hero .glow{position:absolute;inset:-20% -10% auto auto;width:60vw;height:60vw;max-width:760px;max-height:760px;background:radial-gradient(circle at 60% 40%,rgba(131,247,0,.30),rgba(14,209,0,.10) 40%,transparent 66%);filter:blur(10px);animation:float 12s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,26px)}}
+  .hero .grid-lines{position:absolute;inset:0;background-image:linear-gradient(#ffffff12 1px,transparent 1px),linear-gradient(90deg,#ffffff12 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,transparent,black 30%,black 70%,transparent)}
+  .hero .wrap{position:relative;z-index:2;padding:96px 24px 104px}
+  .hero h1{font-size:clamp(52px,9vw,132px)}
+  .hero h1 .out{color:transparent;-webkit-text-stroke:2px var(--neon)}
+  .hero p.sub{max-width:520px;margin:26px 0 34px;font-size:18px;color:#cfd2ce}
+  .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .hero .meta{position:absolute;right:24px;bottom:36px;text-align:right;font-size:12.5px;color:#8f938d;z-index:2}
+  .hero .meta b{display:block;font-family:var(--display);font-stretch:125%;font-weight:800;color:var(--neon);font-size:26px;line-height:1}
+
+  /* TRUST STRIP */
+  .trust{background:var(--paper);border-bottom:1px solid var(--line)}
+  .trust .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:22px 24px}
+  .trust .t{display:flex;gap:12px;align-items:center}
+  .trust .t svg{flex-shrink:0;color:var(--green-action)}
+  .trust .t b{display:block;font-size:14px;font-weight:600}
+  .trust .t span{font-size:12.5px;color:var(--grey)}
+
+  /* SECTION SHELL */
+  section.block{padding:78px 0}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px;flex-wrap:wrap}
+  .sec-head h2{font-family:var(--display);font-weight:900;font-stretch:125%;text-transform:uppercase;font-size:clamp(30px,4.4vw,52px);line-height:.95}
+  .sec-head .link{font-weight:600;color:var(--green-action);font-size:15px;white-space:nowrap}
+  .sec-head .link:hover{text-decoration:underline}
+  .head-tools{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+
+  /* DUAL BANNERS */
+  .dual{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:24px 0}
+  .pbanner{border-radius:var(--radius);overflow:hidden;position:relative;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;padding:34px;color:#fff}
+  .pbanner .eyebrow{color:var(--neon)}
+  .pbanner h3{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(28px,3.6vw,40px);line-height:.95;margin:10px 0 8px}
+  .pbanner p{font-size:14.5px;max-width:280px;margin-bottom:18px;opacity:.9}
+  .pbanner .glow2{position:absolute;top:-30%;right:-10%;width:60%;height:70%;background:radial-gradient(circle,rgba(131,247,0,.25),transparent 65%);filter:blur(6px)}
+  .pb-dark{background:linear-gradient(135deg,#2c2928,#161414)}
+  .pb-green{background:linear-gradient(135deg,#0ED100,#0a8f00)}
+  .pb-green .eyebrow{color:#eafce2}
+
+  /* MEMBERSHIP */
+  .member{background:linear-gradient(100deg,#1a1717,#231F20 55%,#161414);color:#fff}
+  .member .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:60px 24px}
+  .member .plus{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(40px,6vw,72px);line-height:.9}
+  .member .plus i{font-style:normal;color:var(--neon)}
+  .member p{color:#cfd2ce;max-width:440px;margin:16px 0 22px;font-size:16px}
+  .member .save{display:inline-flex;align-items:center;gap:10px;background:#ffffff10;border:1px solid #ffffff22;border-radius:100px;padding:8px 16px;font-size:14px;margin-bottom:22px}
+  .member .save b{color:var(--neon);font-family:var(--display);font-stretch:125%}
+  .benefits{list-style:none;display:grid;gap:14px}
+  .benefits li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
+  .benefits .chk{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--neon);color:var(--carbon);display:grid;place-items:center;font-weight:800;font-size:13px;margin-top:1px}
+
+  /* SAVINGS CALCULATOR */
+  .savings{background:#161414;color:#fff}
+  .savings .wrap{padding:70px 24px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .savings h2{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(30px,4.2vw,50px);line-height:.95}
+  .savings .lead{color:#cfd2ce;margin:14px 0 26px;font-size:16px;max-width:400px}
+  .savings label{display:block;font-size:13px;color:#9a9e98;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:10px}
+  .savings .spend{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:40px;color:var(--neon);line-height:1;margin-bottom:16px}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:100px;background:#3a3d38;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--neon);cursor:pointer;border:4px solid #161414;box-shadow:0 0 0 2px var(--neon)}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--neon);cursor:pointer;border:4px solid #161414}
+  .savings .rng-cap{display:flex;justify-content:space-between;font-size:12px;color:#7c807a;margin-top:8px}
+  .calc-card{background:#231F20;border:1px solid #34312f;border-radius:var(--radius);padding:34px}
+  .calc-card .big{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:14px;color:#9a9e98;margin-bottom:20px;letter-spacing:.05em}
+  .barrow{margin-bottom:18px}
+  .barrow .bl{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:7px}
+  .barrow .bl b{font-weight:600}
+  .bgraph{height:14px;border-radius:100px;background:#3a3d38;overflow:hidden}
+  .bgraph .f{height:100%;border-radius:100px;transition:width .35s}
+  .f-detal{background:var(--grey)}
+  .f-mayor{background:linear-gradient(90deg,var(--green-bright),var(--neon))}
+  .result{border-top:1px solid #34312f;margin-top:22px;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end}
+  .result .r-lbl{font-size:13px;color:#9a9e98}
+  .result .r-year{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(34px,5vw,52px);color:var(--neon);line-height:1}
+  .result .r-mo{font-size:14px;color:#cfd2ce;margin-top:4px}
+  .payback{font-size:12.5px;color:#9a9e98;margin-top:16px}
+  .payback b{color:#fff}
+
+  /* PRICE MODE TOGGLE */
+  .modetoggle{display:inline-flex;background:var(--paper-2);border:1px solid var(--line);border-radius:100px;padding:4px;gap:2px}
+  .modetoggle button{border:0;background:transparent;padding:9px 18px;border-radius:100px;font-weight:600;font-size:13.5px;cursor:pointer;color:var(--grey);display:flex;align-items:center;gap:6px;transition:background .18s,color .18s}
+  .modetoggle button.on{background:var(--carbon);color:var(--neon)}
+  .modetoggle .lbl{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--grey);align-self:center;padding-left:8px;font-weight:600}
+
+  /* COUNTDOWN */
+  .countdown{display:inline-flex;align-items:center;gap:10px;background:var(--carbon);color:#fff;border-radius:100px;padding:8px 8px 8px 16px;font-size:13px}
+  .countdown .t{color:#cfd2ce}
+  .countdown .clock{font-family:var(--display);font-stretch:125%;font-weight:800;color:var(--neon);background:#000;border-radius:100px;padding:6px 12px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+
+  /* AD CAROUSEL */
+  .adband{padding:34px 0}
+  .adcar{position:relative;border-radius:20px;overflow:hidden}
+  .adtrack{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+  .adslide{min-width:100%;min-height:230px;display:flex;flex-direction:column;justify-content:center;padding:44px clamp(28px,6vw,72px);color:#fff;position:relative}
+  .adslide .eyebrow{color:var(--neon);margin-bottom:10px}
+  .adslide h3{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(28px,4.6vw,52px);line-height:.92}
+  .adslide p{font-size:15px;margin:12px 0 20px;max-width:420px;opacity:.92}
+  .ad1{background:linear-gradient(120deg,#0EAE00,#83F700)}
+  .ad1 .eyebrow,.ad1 h3,.ad1 p{color:#0a2600}
+  .ad1 .eyebrow{color:#0a3d00}
+  .ad2{background:linear-gradient(120deg,#2c2928,#141212)}
+  .ad3{background:linear-gradient(120deg,#0ED100,#0a8f00)}
+  .adarrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:#ffffff22;backdrop-filter:blur(4px);border:0;color:#fff;font-size:20px;cursor:pointer;display:grid;place-items:center;z-index:3}
+  .adarrow:hover{background:#ffffff35}
+  .adarrow.prev{left:16px}.adarrow.next{right:16px}
+  .addots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3}
+  .addots button{width:9px;height:9px;border-radius:50%;border:0;background:#ffffff55;cursor:pointer;padding:0}
+  .addots button.on{background:#fff;width:26px;border-radius:100px}
+
+  /* FILTER CHIPS */
+  .chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+  .chip{border:1px solid var(--line);background:var(--paper);border-radius:100px;padding:9px 18px;font-size:13.5px;font-weight:600;color:var(--grey);cursor:pointer;transition:all .16s}
+  .chip:hover{border-color:var(--green-action);color:var(--green-action)}
+  .chip.on{background:var(--green-action);border-color:var(--green-action);color:#fff}
+
+  /* CATEGORY TILES */
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .tile{border-radius:var(--radius);overflow:hidden;position:relative;aspect-ratio:3/4;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;transition:transform .2s}
+  .tile:hover{transform:translateY(-4px)}
+  .tile .icn{position:absolute;top:20px;left:20px;opacity:.9}
+  .tile h3{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:20px;line-height:1;position:relative;z-index:2}
+  .tile span{position:relative;z-index:2;font-size:13px;color:#eafce2;margin-top:6px}
+  .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.55))}
+  .t1{background:linear-gradient(150deg,#0ED100,#0a8f00)}.t2{background:linear-gradient(150deg,#3a3d38,#231F20)}
+  .t3{background:linear-gradient(150deg,#7fe600,#0EAE00)}.t4{background:linear-gradient(150deg,#4A4B4C,#2a2b2b)}
+
+  /* PRODUCT CARDS */
+  .promo-band{background:var(--paper-2)}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column;cursor:pointer}
+  .card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(35,31,32,.10)}
+  .card.hide{display:none}
+  .card .thumb{aspect-ratio:1/1;position:relative;display:grid;place-items:center}
+  .card .thumb .badge{position:absolute;top:12px;left:12px;background:var(--carbon);color:var(--neon);font-family:var(--display);font-stretch:125%;font-weight:800;font-size:13px;padding:5px 10px;border-radius:8px}
+  .card .thumb .qv{position:absolute;bottom:10px;right:10px;background:#fff;border:1px solid var(--line);border-radius:100px;font-size:12px;font-weight:600;padding:6px 12px;opacity:0;transform:translateY(6px);transition:.18s}
+  .card:hover .thumb .qv{opacity:1;transform:none}
+  .card .body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .card .cat{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--grey);font-weight:600}
+  .card h4{font-size:16px;font-weight:600;line-height:1.25}
+  .priceline{margin-top:auto;display:flex;align-items:baseline;gap:8px;padding-top:6px;flex-wrap:wrap}
+  .priceline .now{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:22px}
+  .priceline .old{color:var(--grey);text-decoration:line-through;font-size:14px}
+  .sub2{font-size:12.5px;color:var(--green-action);font-weight:600}
+  .tiers{display:none;gap:6px;font-size:11px;color:var(--grey);flex-wrap:wrap}
+  .tiers.show{display:flex}
+  .tiers b{color:var(--carbon)}
+  .add{margin-top:10px;text-align:center;background:var(--tint);color:var(--green-action);font-weight:600;padding:10px;border-radius:10px;font-size:14px;border:0;cursor:pointer;transition:background .18s,color .18s;width:100%}
+  .card:hover .add,.add:hover{background:var(--green-action);color:#fff}
+  .th-a{background:linear-gradient(160deg,#eafce2,#d6f5c4)}.th-b{background:linear-gradient(160deg,#eef0ec,#dfe3dc)}
+  .th-c{background:linear-gradient(160deg,#e7fbe0,#c7f2b3)}.th-d{background:linear-gradient(160deg,#f0f2ee,#e0e4dd)}
+
+  /* CAMPAIGN BANNER */
+  .campaign{background:var(--carbon);color:#fff;position:relative;overflow:hidden}
+  .campaign .stripes{position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 40px,#83f70008 40px 42px)}
+  .campaign .wrap{position:relative;z-index:2;padding:70px 24px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap}
+  .campaign h2{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(34px,5.4vw,74px);line-height:.9;max-width:14ch}
+  .campaign h2 .hl{color:var(--neon)}
+  .campaign .r{max-width:320px}
+  .campaign .r p{color:#cfd2ce;font-size:16px;margin-bottom:20px}
+  .campaign .r .chip2{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--neon);border:1px solid #ffffff22;border-radius:100px;padding:7px 14px;margin-top:14px}
+
+  /* BUNDLES */
+  .bundles{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .bundle{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+  .bundle .bhead{padding:22px;color:#fff;position:relative;font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:22px;line-height:1}
+  .bundle .bhead .bsave{position:absolute;top:14px;right:14px;background:var(--neon);color:var(--carbon);font-size:12px;padding:4px 10px;border-radius:8px;font-stretch:100%}
+  .bh-a{background:linear-gradient(135deg,#0ED100,#0a8f00)}.bh-b{background:linear-gradient(135deg,#3a3d38,#231F20)}
+  .bh-c{background:linear-gradient(135deg,#7fe600,#0EAE00)}.bh-d{background:linear-gradient(135deg,#4A4B4C,#2a2b2b)}
+  .bundle .binc{list-style:none;padding:18px 22px;display:grid;gap:9px;flex:1}
+  .bundle .binc li{font-size:13.5px;color:var(--grey);display:flex;gap:8px}
+  .bundle .binc li::before{content:"+";color:var(--green-action);font-weight:800}
+  .bundle .bfoot{padding:0 22px 22px}
+  .bundle .bfoot .priceline{margin:0 0 12px}
+
+  /* RAIL */
+  .rail{display:flex;gap:18px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  .rail .card{min-width:250px;scroll-snap-align:start}
+
+  /* REFERRAL BANNER */
+  .referral .wrap{background:linear-gradient(120deg,#0ED100,#0a8f00);border-radius:20px;padding:44px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;color:#fff;position:relative;overflow:hidden}
+  .referral .glow3{position:absolute;top:-40%;right:5%;width:40%;height:120%;background:radial-gradient(circle,rgba(131,247,0,.5),transparent 60%);filter:blur(10px)}
+  .referral h2{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(28px,3.8vw,44px);line-height:.95;position:relative;z-index:2}
+  .referral p{color:#eafce2;margin-top:8px;font-size:15px;position:relative;z-index:2;max-width:360px}
+  .referral .btn{position:relative;z-index:2}
+
+  /* B2B */
+  .b2b{background:var(--tint)}
+  .b2b .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:70px 24px}
+  .b2b h2{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(32px,4.6vw,56px);line-height:.95}
+  .b2b p.lead{margin:16px 0 26px;font-size:17px;color:var(--grey);max-width:420px}
+  .b2b .stats{display:grid;grid-template-columns:1fr 1fr;gap:22px;background:var(--carbon);color:#fff;border-radius:var(--radius);padding:34px}
+  .b2b .stats .s .n{font-family:var(--display);font-stretch:125%;font-weight:900;color:var(--neon);font-size:38px;line-height:1}
+  .b2b .stats .s .l{font-size:13.5px;color:#cfd2ce;margin-top:6px}
+  .b2b .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+
+  /* PROOF */
+  .proof .wrap{text-align:center}
+  .proof .stars{color:var(--green-action);font-size:14px;letter-spacing:.12em;font-weight:700}
+  .proof blockquote{font-family:var(--display);font-stretch:100%;font-weight:700;font-size:clamp(24px,3.4vw,38px);line-height:1.15;max-width:16ch;margin:18px auto 20px;letter-spacing:-.01em}
+  .proof cite{font-style:normal;color:var(--grey);font-size:14px}
+  .logos{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:center;align-items:center;margin-top:44px;opacity:.7}
+  .logos span{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:17px;color:var(--grey)}
+
+  /* RESOURCES */
+  .res-band{background:var(--paper-2)}
+  .res{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .art{background:var(--paper);border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);transition:transform .18s}
+  .art:hover{transform:translateY(-4px)}
+  .art .cover{aspect-ratio:16/10}
+  .a1{background:linear-gradient(140deg,#0ED100,#0a8f00)}.a2{background:linear-gradient(140deg,#3a3d38,#231F20)}.a3{background:linear-gradient(140deg,#83F700,#0EAE00)}
+  .art .txt{padding:20px}
+  .art .tag{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--green-action);font-weight:700}
+  .art h4{font-size:18px;font-weight:600;margin:8px 0 6px;line-height:1.25}
+  .art p{font-size:14px;color:var(--grey)}
+
+  /* NEWSLETTER */
+  .news{background:var(--green-action);color:#fff}
+  .news .wrap{padding:56px 24px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .news h2{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(30px,4.4vw,52px);line-height:.95}
+  .news p{color:#eafce2;margin-top:10px;font-size:16px}
+  .news .form{display:flex;gap:10px;background:#fff;padding:8px;border-radius:100px;max-width:460px;margin-left:auto;width:100%}
+  .news input{border:0;outline:0;flex:1;padding:0 18px;font-size:15px;font-family:var(--body);background:transparent;color:var(--carbon)}
+  .news .form .btn{flex-shrink:0}
+
+  /* FOOTER */
+  footer{background:var(--carbon);color:#b7bab5;padding:64px 0 34px}
+  .fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+  footer .brand .word{color:#fff}
+  footer .about{margin-top:16px;font-size:14px;max-width:260px;line-height:1.6}
+  footer h5{color:#fff;font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.05em;margin-bottom:16px}
+  footer ul{list-style:none;display:grid;gap:10px}
+  footer ul a{font-size:14px}
+  footer ul a:hover{color:var(--neon)}
+  .fbar{border-top:1px solid #ffffff1a;margin-top:48px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:13px}
+  .fbar .socials{display:flex;gap:14px}
+  .note{background:#fff;border-top:1px solid var(--line);padding:14px;text-align:center;font-size:12.5px;color:var(--grey)}
+  .note b{color:var(--green-action)}
+
+  /* CART DRAWER + QUICKVIEW */
+  .overlay{position:fixed;inset:0;background:rgba(20,18,18,.5);opacity:0;visibility:hidden;transition:.25s;z-index:90}
+  .overlay.open{opacity:1;visibility:visible}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:400px;max-width:92vw;background:#fff;z-index:100;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.15)}
+  .drawer.open{transform:none}
+  .drawer .dhead{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line)}
+  .drawer .dhead h3{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:22px}
+  .drawer .close{background:none;border:0;cursor:pointer;font-size:22px;line-height:1;color:var(--grey)}
+  .shipbar{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--tint)}
+  .shipbar .msg{font-size:13.5px;font-weight:600;margin-bottom:8px}
+  .shipbar .msg b{color:var(--green-action)}
+  .shipbar .track{height:8px;background:#dce7d3;border-radius:100px;overflow:hidden}
+  .shipbar .fill{height:100%;width:0;background:linear-gradient(90deg,var(--green-bright),var(--neon));transition:width .3s}
+  .ditems{flex:1;overflow-y:auto;padding:8px 22px}
+  .empty{text-align:center;color:var(--grey);padding:60px 20px;font-size:14px}
+  .empty .btn{margin-top:18px}
+  .li{display:flex;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center}
+  .li .ph{width:52px;height:52px;border-radius:10px;background:var(--tint);flex-shrink:0;display:grid;place-items:center;color:var(--green-action);font-family:var(--display);font-stretch:125%;font-weight:800}
+  .li .info{flex:1;min-width:0}
+  .li .info h5{font-size:14px;font-weight:600;line-height:1.3}
+  .li .info .pr{font-size:13px;color:var(--grey);margin-top:2px}
+  .li .qty{display:flex;align-items:center;gap:8px}
+  .li .qty button{width:26px;height:26px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;font-size:15px;color:var(--carbon)}
+  .li .qty span{min-width:18px;text-align:center;font-weight:600;font-size:14px}
+  .dfoot{padding:20px 22px;border-top:1px solid var(--line)}
+  .dfoot .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+  .dfoot .row .lbl{color:var(--grey);font-size:14px}
+  .dfoot .row .amt{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:28px}
+  .dfoot .btn{width:100%;justify-content:center}
+  .dfoot .modehint{font-size:12px;color:var(--grey);text-align:center;margin-top:10px}
+  .dfoot .modehint b{color:var(--green-action)}
+
+  /* QUICKVIEW */
+  .qv{position:fixed;top:50%;left:50%;transform:translate(-50%,-46%) scale(.98);z-index:100;background:#fff;border-radius:20px;width:760px;max-width:94vw;max-height:90vh;overflow:auto;opacity:0;visibility:hidden;transition:.24s}
+  .qv.open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+  .qv .grid{display:grid;grid-template-columns:1fr 1fr}
+  .qv .media{aspect-ratio:1/1;display:grid;place-items:center;position:relative}
+  .qv .media .badge{position:absolute;top:16px;left:16px;background:var(--carbon);color:var(--neon);font-family:var(--display);font-stretch:125%;font-weight:800;font-size:13px;padding:5px 10px;border-radius:8px}
+  .qv .info{padding:34px}
+  .qv .info .cat{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--grey);font-weight:600}
+  .qv .info h3{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:26px;line-height:1;margin:6px 0 12px}
+  .qv .info .desc{font-size:14.5px;color:var(--grey);margin-bottom:16px}
+  .qv .info .priceline{margin:0 0 8px}
+  .qv .info .tiers{margin-bottom:16px}
+  .qv .qclose{position:absolute;top:14px;right:16px;background:#fff;border:1px solid var(--line);border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:16px;color:var(--grey);z-index:2}
+  .qv .qtyrow{display:flex;align-items:center;gap:14px;margin:18px 0}
+  .qv .qtyrow .stp{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:100px;padding:6px}
+  .qv .qtyrow .stp button{width:32px;height:32px;border:0;background:var(--paper-2);border-radius:50%;cursor:pointer;font-size:18px}
+  .qv .qtyrow .stp span{min-width:20px;text-align:center;font-weight:700}
+  .qv .qadd{width:100%;justify-content:center}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--carbon);color:#fff;padding:14px 22px;border-radius:100px;font-size:14px;font-weight:600;z-index:120;opacity:0;transition:.25s;display:flex;align-items:center;gap:10px;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast .d{width:20px;height:20px;background:var(--neon);color:var(--carbon);border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:12px}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s,transform .6s}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:960px){
+    nav.primary,.util .ic.hide{display:none}
+    .burger{display:flex}
+    .tiles,.cards,.bundles{grid-template-columns:repeat(2,1fr)}
+    .res{grid-template-columns:1fr}
+    .trust .wrap{grid-template-columns:1fr 1fr}
+    .dual,.member .wrap,.savings .wrap,.b2b .wrap,.news .wrap{grid-template-columns:1fr;gap:26px}
+    .news .form{margin-left:0}
+    .fgrid{grid-template-columns:1fr 1fr}
+    .qv .grid{grid-template-columns:1fr}
+    .qv .media{aspect-ratio:16/10}
+  }
+  @media(max-width:560px){
+    .tiles,.cards,.bundles{grid-template-columns:1fr 1fr;gap:12px}
+    .hero .wrap{padding:66px 24px 84px}
+    section.block{padding:56px 0}
+    .b2b .stats{grid-template-columns:1fr 1fr}
+    .trust .wrap{grid-template-columns:1fr}
+    .modetoggle .lbl{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#83F700"/><stop offset="1" stop-color="#0EAE00"/></linearGradient>
+</defs></svg>
+
+<div class="topstrip"><div class="wrap">
+  <div>Calificados <strong>4.8/5</strong> por más de 1.200 negocios · Envío a toda Venezuela</div>
+  <div class="rt"><a href="#">Centro de ayuda</a><a href="#">Rastrea tu pedido</a></div>
+</div></div>
+
+<header class="main"><div class="wrap">
+  <a href="#" class="brand" aria-label="Infaplastic inicio">
+    <svg viewBox="0 0 100 92" aria-hidden="true"><path d="M50 4 L96 88 L4 88 Z" fill="url(#lg)"/><path d="M50 40 L74 82 L26 82 Z" fill="#fff"/><path d="M50 4 L50 40 L74 82 L96 88 Z" fill="#0a8f00" opacity=".18"/></svg>
+    <span class="word">Infaplastic</span>
+  </a>
+  <nav class="primary"><a href="#">Productos</a><a href="#b2b">Mayoristas</a><a href="#member">Membresía</a><a href="#promos">Promos</a><a href="#recursos">Recursos</a></nav>
+  <div class="util">
+    <button class="ic hide" aria-label="Buscar"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></button>
+    <button class="ic hide">USD ▾</button>
+    <button class="ic hide">Ingresar</button>
+    <button class="ic cart-btn" id="openCart" aria-label="Carrito"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6L5 3H2"/></svg><span class="dot" id="cartCount">0</span></button>
+    <button class="burger" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
+</div></header>
+
+<div class="ticker" aria-hidden="true"><div class="track">
+  <span>−20% en vasos térmicos</span><span class="sep">/</span><span>Envío gratis desde $50</span><span class="sep">/</span><span>Nuevo: línea biodegradable</span><span class="sep">/</span><span>Precios de mayorista con Infaplastic+</span><span class="sep">/</span><span>3x2 en servilletas esta semana</span><span class="sep">/</span>
+  <span>−20% en vasos térmicos</span><span class="sep">/</span><span>Envío gratis desde $50</span><span class="sep">/</span><span>Nuevo: línea biodegradable</span><span class="sep">/</span><span>Precios de mayorista con Infaplastic+</span><span class="sep">/</span><span>3x2 en servilletas esta semana</span><span class="sep">/</span>
+</div></div>
+
+<section class="hero">
+  <div class="grid-lines"></div><div class="glow"></div>
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--neon)">Desechables de higiene · Al mayor y al detal</div>
+    <h1 class="display" style="margin-top:18px">Lo desechable,<br><span class="out">reinventado</span></h1>
+    <p class="sub">Vasos, envases, cubiertos y más. Calidad, diseño y precio en una sola tienda — comprando una caja o comprando cien.</p>
+    <div class="cta-row"><a href="#promos" class="btn btn-neon">Ver catálogo</a><a href="#b2b" class="btn btn-ghost-neon">Soy mayorista</a></div>
+  </div>
+  <div class="meta"><b>+2.500</b>productos<br>en stock</div>
+</section>
+
+<div class="trust"><div class="wrap">
+  <div class="t"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><div><b>Envío nacional</b><span>A toda Venezuela, 2–4 días</span></div></div>
+  <div class="t"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg><div><b>Pago seguro</b><span>Truo Pay · bancos locales</span></div></div>
+  <div class="t"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><div><b>Factura fiscal</b><span>Para tu contabilidad</span></div></div>
+  <div class="t"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v11H8l-4 3z"/></svg><div><b>Atención directa</b><span>Por WhatsApp, en minutos</span></div></div>
+</div></div>
+
+<!-- DUAL BANNERS -->
+<div class="wrap"><div class="dual reveal">
+  <a class="pbanner pb-dark" href="#"><div class="glow2"></div>
+    <div class="eyebrow">Nuevo</div><h3>Línea biodegradable</h3>
+    <p>Cubiertos y vasos compostables, listos para tu marca.</p>
+    <span class="btn btn-ghost-neon btn-sm">Descúbrela</span>
+  </a>
+  <a class="pbanner pb-green" href="#combos">
+    <div class="eyebrow">Ahorra hasta 30%</div><h3>Kits para tu negocio</h3>
+    <p>Todo lo que necesitas para surtir, en un solo pedido.</p>
+    <span class="btn btn-neon btn-sm">Ver kits</span>
+  </a>
+</div></div>
+
+<!-- MEMBERSHIP -->
+<section class="member" id="member">
+  <div class="wrap">
+    <div>
+      <div class="plus">Infaplastic<i>+</i></div>
+      <p>Precios de mayorista todo el año, aunque compres poco. Una membresía pensada para negocios que reponen seguido.</p>
+      <div class="save">Ahorro promedio <b>$38/mes</b> vs. precio detal</div><br>
+      <a href="#" class="btn btn-neon">Únete a Infaplastic+</a>
+    </div>
+    <ul class="benefits">
+      <li><span class="chk">✓</span> Precio mayorista desde la primera compra</li>
+      <li><span class="chk">✓</span> Acceso anticipado a promos y lanzamientos</li>
+      <li><span class="chk">✓</span> Envíos preferentes a todo el país</li>
+      <li><span class="chk">✓</span> Un asesor asignado para tus pedidos</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SAVINGS CALCULATOR -->
+<section class="savings">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow" style="color:var(--neon)">Calculadora Infaplastic+</div>
+      <h2 style="margin-top:14px">¿Cuánto ahorrarías?</h2>
+      <p class="lead">Mueve el control según lo que sueles comprar al mes y descubre tu ahorro con precios de mayorista.</p>
+      <label for="spend">Tu compra mensual</label>
+      <div class="spend" id="spendVal">$300</div>
+      <input type="range" id="spend" min="20" max="1500" step="10" value="300">
+      <div class="rng-cap"><span>$20</span><span>$1.500</span></div>
+    </div>
+    <div class="calc-card">
+      <div class="big">Detal vs. Mayorista</div>
+      <div class="barrow"><div class="bl"><span>Precio detal</span><b id="bDetal">$300</b></div><div class="bgraph"><div class="f f-detal" style="width:100%"></div></div></div>
+      <div class="barrow"><div class="bl"><span>Con Infaplastic+</span><b id="bMayor">$234</b></div><div class="bgraph"><div class="f f-mayor" id="mayorFill" style="width:78%"></div></div></div>
+      <div class="result"><div><div class="r-lbl">Ahorras al año</div><div class="r-mo" id="saveMo">$66 al mes</div></div><div class="r-year" id="saveYr">$792</div></div>
+      <div class="payback" id="payback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="block reveal">
+  <div class="wrap">
+    <div class="sec-head"><div><div class="eyebrow">Compra por categoría</div><h2 class="display" style="margin-top:8px">Todo lo desechable</h2></div><a href="#" class="link">Ver todas →</a></div>
+    <div class="tiles">
+      <a class="tile t1" href="#"><svg class="icn" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M6 3h12l-1.5 17a1 1 0 0 1-1 .9H8.5a1 1 0 0 1-1-.9L6 3z"/><path d="M5 8h14"/></svg><h3>Vasos y tapas</h3><span>Térmicos · Fríos · Biodegradables</span></a>
+      <a class="tile t2" href="#"><svg class="icn" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M3 11h18M9 7V5h6v2"/></svg><h3>Envases y bandejas</h3><span>Clamshell · Aluminio · Foam</span></a>
+      <a class="tile t3" href="#"><svg class="icn" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10M16 3c-1.5 0-2 2-2 4s.5 4 2 4v10"/></svg><h3>Cubiertos</h3><span>Plástico · Madera · Compostable</span></a>
+      <a class="tile t4" href="#"><svg class="icn" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/></svg><h3>Bolsas y film</h3><span>Camiseta · Basura · Vinipel</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- AD CAROUSEL -->
+<div class="adband"><div class="wrap"><div class="adcar reveal" id="adcar">
+  <div class="adtrack" id="adtrack">
+    <div class="adslide ad1"><div class="eyebrow">Julio</div><h3>Envío gratis todo el mes</h3><p>En todas tus compras desde $50, a cualquier parte del país.</p><span class="btn btn-outline btn-sm">Comprar ahora</span></div>
+    <div class="adslide ad2"><div class="eyebrow">Solo esta semana</div><h3>2x1 en vasos seleccionados</h3><p>Llévate el doble en las referencias más pedidas. Hasta agotar stock.</p><span class="btn btn-neon btn-sm">Ver oferta</span></div>
+    <div class="adslide ad3"><div class="eyebrow">Mayoristas</div><h3>Catálogo mayorista 2026</h3><p>Precios por volumen, novedades y fichas técnicas. Descárgalo gratis.</p><span class="btn btn-neon btn-sm">Descargar PDF</span></div>
+  </div>
+  <button class="adarrow prev" id="adPrev" aria-label="Anterior">‹</button>
+  <button class="adarrow next" id="adNext" aria-label="Siguiente">›</button>
+  <div class="addots" id="adDots"></div>
+</div></div></div>
+
+<!-- PROMOS -->
+<section class="block promo-band reveal" id="promos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Ofertas de la semana</div><h2 class="display" style="margin-top:8px">Promos que vuelan</h2></div>
+      <div class="head-tools">
+        <div class="countdown"><span class="t">Termina en</span><span class="clock" id="clock">--:--:--</span></div>
+        <div class="modetoggle" role="group" aria-label="Modo de precio"><span class="lbl">Precios</span><button class="mt on" data-mode="detal">Detal</button><button class="mt" data-mode="mayor">Mayor</button></div>
+      </div>
+    </div>
+    <div class="chips">
+      <button class="chip on" data-filter="todos">Todos</button>
+      <button class="chip" data-filter="ofertas">En oferta</button>
+      <button class="chip" data-filter="bio">Biodegradable</button>
+      <button class="chip" data-filter="listo">Listo para enviar</button>
+    </div>
+    <div class="cards" id="promoGrid">
+      <div class="card buy" data-name="Vaso térmico 8oz (x50)" data-cat="Vasos" data-retail="3.00" data-sale="2.40" data-mayor="1.90" data-min="10" data-tags="ofertas listo" data-th="th-a">
+        <div class="thumb th-a"><span class="badge">−20%</span><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><path d="M6 3h12l-1.5 17a1 1 0 0 1-1 .9H8.5a1 1 0 0 1-1-.9L6 3z"/><path d="M5 8h14"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Vasos</div><h4>Vaso térmico 8oz (x50)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+      <div class="card buy" data-name="Clamshell 3 divisiones (x100)" data-cat="Envases" data-retail="8.10" data-sale="6.90" data-mayor="5.40" data-min="6" data-tags="ofertas listo" data-th="th-b">
+        <div class="thumb th-b"><span class="badge">−15%</span><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#3a3d38" stroke-width="1.4"><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M3 11h18"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Envases</div><h4>Clamshell 3 divisiones (x100)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+      <div class="card buy" data-name="Cubiertos compostables (x100)" data-cat="Cubiertos" data-retail="3.10" data-mayor="2.45" data-min="8" data-tags="bio listo" data-th="th-c">
+        <div class="thumb th-c"><span class="badge">Nuevo</span><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10M16 3c-1.5 0-2 2-2 4s.5 4 2 4v10"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Cubiertos</div><h4>Cubiertos compostables (x100)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+      <div class="card buy" data-name="Servilletas dispensador (x500)" data-cat="Higiene" data-retail="2.20" data-mayor="1.70" data-min="12" data-tags="ofertas listo" data-th="th-d">
+        <div class="thumb th-d"><span class="badge">3x2</span><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#4A4B4C" stroke-width="1.4"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M8 5v14M12 5v14M16 5v14"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Higiene</div><h4>Servilletas dispensador (x500)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMPAIGN BANNER -->
+<section class="campaign">
+  <div class="stripes"></div>
+  <div class="wrap">
+    <h2 class="display">Surte antes de que se <span class="hl">agote</span></h2>
+    <div class="r">
+      <p>La demanda sube en temporada alta. Asegura tu stock hoy, con los precios de hoy.</p>
+      <a href="#promos" class="btn btn-neon">Hacer mi pedido</a>
+      <div class="chip2">⚡ Reposición en 2–4 días hábiles</div>
+    </div>
+  </div>
+</section>
+
+<!-- BUNDLES -->
+<section class="block reveal" id="combos">
+  <div class="wrap">
+    <div class="sec-head"><div><div class="eyebrow">Combos que ahorran</div><h2 class="display" style="margin-top:8px">Kits para tu negocio</h2></div><a href="#" class="link">Ver todos los kits →</a></div>
+    <div class="bundles">
+      <div class="bundle buy" data-name="Kit Cafetería" data-cat="Kit" data-retail="42.00" data-sale="34.90" data-mayor="29.90" data-min="1" data-th="bh-a">
+        <div class="bhead bh-a"><span class="bsave"></span>Kit Cafetería</div>
+        <ul class="binc"><li>500 vasos térmicos 8oz</li><li>500 tapas</li><li>1.000 servilletas</li><li>500 removedores</li></ul>
+        <div class="bfoot"><div class="priceline"></div><button class="add" type="button">Agregar kit</button></div>
+      </div>
+      <div class="bundle buy" data-name="Kit Comida Rápida" data-cat="Kit" data-retail="55.00" data-sale="44.90" data-mayor="38.90" data-min="1" data-th="bh-b">
+        <div class="bhead bh-b"><span class="bsave"></span>Kit Comida Rápida</div>
+        <ul class="binc"><li>300 clamshells 3 div.</li><li>500 bolsas camiseta</li><li>300 sets de cubiertos</li><li>500 servilletas</li></ul>
+        <div class="bfoot"><div class="priceline"></div><button class="add" type="button">Agregar kit</button></div>
+      </div>
+      <div class="bundle buy" data-name="Kit Fiesta" data-cat="Kit" data-retail="30.00" data-sale="24.90" data-mayor="20.90" data-min="1" data-th="bh-c">
+        <div class="bhead bh-c"><span class="bsave"></span>Kit Fiesta</div>
+        <ul class="binc"><li>300 vasos de colores</li><li>300 platos</li><li>300 sets de cubiertos</li><li>200 servilletas</li></ul>
+        <div class="bfoot"><div class="priceline"></div><button class="add" type="button">Agregar kit</button></div>
+      </div>
+      <div class="bundle buy" data-name="Kit Limpieza" data-cat="Kit" data-retail="38.00" data-sale="30.90" data-mayor="26.90" data-min="1" data-th="bh-d">
+        <div class="bhead bh-d"><span class="bsave"></span>Kit Limpieza</div>
+        <ul class="binc"><li>200 guantes de vinilo</li><li>100 bolsas de basura</li><li>50 paños multiuso</li><li>4 jabones líquidos</li></ul>
+        <div class="bfoot"><div class="priceline"></div><button class="add" type="button">Agregar kit</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND STATEMENT -->
+<section class="campaign" style="background:var(--carbon)">
+  <div class="stripes"></div>
+  <div class="wrap" style="justify-content:center;text-align:center;flex-direction:column">
+    <div class="eyebrow" style="color:var(--neon)">Por qué Infaplastic</div>
+    <h2 class="display" style="max-width:14ch;margin:16px auto 0">Innovamos lo que otros dan por <span class="hl">sentado</span></h2>
+    <p style="color:#cfd2ce;max-width:560px;margin:22px auto 26px;font-size:18px">Convertimos una categoría genérica en productos con estándar, presentación y disponibilidad reales.</p>
+    <a href="#" class="btn btn-ghost-neon" style="margin:0 auto">▶ Conoce nuestra planta</a>
+  </div>
+</section>
+
+<!-- BESTSELLERS -->
+<section class="block reveal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="eyebrow">Los que más se repiten</div><h2 class="display" style="margin-top:8px">Más vendidos</h2></div>
+      <div class="head-tools"><div class="modetoggle" role="group" aria-label="Modo de precio"><span class="lbl">Precios</span><button class="mt on" data-mode="detal">Detal</button><button class="mt" data-mode="mayor">Mayor</button></div></div>
+    </div>
+    <div class="rail" id="bestGrid">
+      <div class="card buy" data-name="Vaso frío 16oz + tapa (x50)" data-cat="Vasos" data-retail="3.80" data-mayor="3.05" data-min="10" data-th="th-c">
+        <div class="thumb th-c"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><path d="M6 3h12l-1.5 17a1 1 0 0 1-1 .9H8.5a1 1 0 0 1-1-.9L6 3z"/><path d="M5 8h14"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Vasos</div><h4>Vaso frío 16oz + tapa (x50)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+      <div class="card buy" data-name="Bolsa camiseta reforzada (x100)" data-cat="Bolsas" data-retail="1.80" data-mayor="1.40" data-min="20" data-th="th-a">
+        <div class="thumb th-a"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Bolsas</div><h4>Bolsa camiseta reforzada (x100)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+      <div class="card buy" data-name="Bandeja aluminio 1 lb (x50)" data-cat="Envases" data-retail="5.40" data-mayor="4.35" data-min="6" data-th="th-b">
+        <div class="thumb th-b"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#3a3d38" stroke-width="1.4"><rect x="3" y="7" width="18" height="12" rx="1.5"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Envases</div><h4>Bandeja aluminio 1 lb (x50)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+      <div class="card buy" data-name="Set cuchara-tenedor (x250)" data-cat="Cubiertos" data-retail="4.60" data-mayor="3.70" data-min="8" data-th="th-d">
+        <div class="thumb th-d"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#4A4B4C" stroke-width="1.4"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Cubiertos</div><h4>Set cuchara-tenedor (x250)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+      <div class="card buy" data-name="Guantes vinilo talla M (x100)" data-cat="Higiene" data-retail="3.30" data-mayor="2.65" data-min="10" data-th="th-a">
+        <div class="thumb th-a"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M8 5v14M12 5v14"/></svg><span class="qv">Vista rápida</span></div>
+        <div class="body"><div class="cat">Higiene</div><h4>Guantes vinilo talla M (x100)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERRAL BANNER -->
+<section class="block referral reveal">
+  <div class="wrap">
+    <div class="glow3"></div>
+    <div><h2>Refiere un negocio y ambos ganan $10</h2><p>Tu red también compra desechables. Comparte tu código y que te lo agradezcan.</p></div>
+    <a href="#" class="btn btn-neon">Invitar y ganar</a>
+  </div>
+</section>
+
+<!-- B2B -->
+<section class="b2b" id="b2b">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Para negocios</div>
+      <h2 class="display" style="margin-top:10px">¿Compras al por mayor?</h2>
+      <p class="lead">Precios por volumen, mínimos bajos y entrega a todo el país. Crea tu cuenta mayorista y recibe una cotización en menos de 24 horas.</p>
+      <div class="cta-row"><a href="#" class="btn btn-green">Crear cuenta mayorista</a><a href="#" class="btn btn-outline">Solicitar cotización</a></div>
+    </div>
+    <div class="stats reveal">
+      <div class="s"><div class="n">−35%</div><div class="l">de ahorro promedio por volumen</div></div>
+      <div class="s"><div class="n">24h</div><div class="l">para tu cotización</div></div>
+      <div class="s"><div class="n">1.200+</div><div class="l">negocios ya compran aquí</div></div>
+      <div class="s"><div class="n">2–4d</div><div class="l">entrega nacional</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section class="block proof reveal">
+  <div class="wrap">
+    <div class="stars">★★★★★  4.8 / 5</div>
+    <blockquote>“Reponemos cada semana y nunca nos quedan cortos. Precio y calidad, sin drama.”</blockquote>
+    <cite>— María G., panadería en Valencia</cite>
+    <div class="logos"><span>Panadería El Trigal</span><span>Pollos Don José</span><span>Café Central</span><span>Distribuidora Sur</span><span>Heladería Nevada</span></div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="block res-band reveal" id="recursos">
+  <div class="wrap">
+    <div class="sec-head"><div><div class="eyebrow">Recursos para revendedores</div><h2 class="display" style="margin-top:8px">Vende más, compra mejor</h2></div><a href="#" class="link">Ver el blog →</a></div>
+    <div class="res">
+      <a class="art" href="#"><div class="cover a1"></div><div class="txt"><div class="tag">Guía</div><h4>Cómo calcular tu mínimo de reposición sin sobrestock</h4><p>El método simple para no quedarte corto ni amarrar capital.</p></div></a>
+      <a class="art" href="#"><div class="cover a2"></div><div class="txt"><div class="tag">Tendencias</div><h4>Biodegradable en 2026: qué piden ya tus clientes</h4><p>Lo que cambió en la demanda y cómo aprovecharlo.</p></div></a>
+      <a class="art" href="#"><div class="cover a3"></div><div class="txt"><div class="tag">Negocio</div><h4>Márgenes reales en desechables: la tabla que necesitas</h4><p>Costo, precio sugerido y utilidad por categoría.</p></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="news">
+  <div class="wrap">
+    <div><h2>Promos antes que nadie</h2><p>Ofertas, lanzamientos y precios de mayorista, directo a tu correo.</p></div>
+    <div class="form"><input type="email" placeholder="tucorreo@negocio.com" aria-label="Correo"><button class="btn btn-neon">Suscribirme</button></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="brand"><svg viewBox="0 0 100 92" width="30" aria-hidden="true"><path d="M50 4 L96 88 L4 88 Z" fill="url(#lg)"/><path d="M50 40 L74 82 L26 82 Z" fill="#231F20"/></svg><span class="word">Infaplastic</span></div>
+        <p class="about">Desechables de higiene en base plástico. Al mayor y al detal, con envío a toda Venezuela.</p>
+      </div>
+      <div><h5>Comprar</h5><ul><li><a href="#">Todos los productos</a></li><li><a href="#">Promos</a></li><li><a href="#">Novedades</a></li><li><a href="#">Más vendidos</a></li></ul></div>
+      <div><h5>Mayoristas</h5><ul><li><a href="#">Crear cuenta</a></li><li><a href="#">Cotizaciones</a></li><li><a href="#">Infaplastic+</a></li><li><a href="#">Entregas</a></li></ul></div>
+      <div><h5>Ayuda</h5><ul><li><a href="#">Rastrea tu pedido</a></li><li><a href="#">Devoluciones</a></li><li><a href="#">Contacto</a></li><li><a href="#">Preguntas frecuentes</a></li></ul></div>
+    </div>
+    <div class="fbar"><div>© 2026 Infaplastic · Valencia, Venezuela</div><div class="socials"><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="#">TikTok</a></div></div>
+  </div>
+</footer>
+
+<div class="note">Prototipo de diseño — imágenes son marcadores de la paleta. Tipografía: <b>Archivo Expanded</b> + <b>Inter</b>. Prueba: toggle <b>Detal/Mayor</b>, la <b>calculadora</b>, <b>vista rápida</b> y el <b>carrito</b>.</div>
+
+<!-- CART -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Carrito de compra">
+  <div class="dhead"><h3>Tu carrito</h3><button class="close" id="closeCart" aria-label="Cerrar">✕</button></div>
+  <div class="shipbar"><div class="msg" id="shipMsg"></div><div class="track"><div class="fill" id="shipFill"></div></div></div>
+  <div class="ditems" id="ditems"></div>
+  <div class="dfoot"><div class="row"><span class="lbl">Subtotal</span><span class="amt" id="subtotal">$0.00</span></div><button class="btn btn-green">Ir a pagar</button><div class="modehint">Viendo precios de <b id="modeHint">detal</b></div></div>
+</aside>
+
+<!-- QUICKVIEW -->
+<div class="overlay" id="qvOverlay"></div>
+<div class="qv" id="qv" role="dialog" aria-label="Vista rápida">
+  <button class="qclose" id="qvClose" aria-label="Cerrar">✕</button>
+  <div class="grid">
+    <div class="media" id="qvMedia"></div>
+    <div class="info">
+      <div class="cat" id="qvCat"></div>
+      <h3 id="qvName"></h3>
+      <div class="desc" id="qvDesc"></div>
+      <div class="priceline" id="qvPrice"></div>
+      <div class="sub2" id="qvSub" style="margin-bottom:6px"></div>
+      <div class="tiers" id="qvTiers"></div>
+      <div class="qtyrow"><div class="stp"><button id="qvMinus">–</button><span id="qvQty">1</span><button id="qvPlus">+</button></div><span style="font-size:13px;color:var(--grey)">paquetes</span></div>
+      <button class="btn btn-green qadd" id="qvAdd">Agregar al carrito</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="d">✓</span><span id="toastMsg">Agregado al carrito</span></div>
+
+<script>
+(function(){
+  var mode='detal', FREE=50, MEMBER=5, RATE=0.22, cart=[];
+  var fmt=function(n){return '$'+n.toFixed(2)};
+  var DESC={
+    Vasos:'Resistentes al calor y al frío, apilables y a prueba de fugas. Ideales para cafeterías, food trucks y eventos.',
+    Envases:'Cierre seguro y buena rigidez para llevar. Aptos para comida caliente, resisten el transporte sin deformarse.',
+    Cubiertos:'Firmes y cómodos, sin sabores ni astillas. Presentación limpia para tu servicio de comida para llevar.',
+    Higiene:'Suaves, absorbentes y de alto rendimiento. Pensados para reponer seguido sin disparar tu costo.',
+    Bolsas:'Reforzadas para más carga sin romperse. La opción confiable para el día a día de tu negocio.',
+    Kit:'Un combo listo para surtir tu operación completa, a un precio pensado para que ganes más por pedido.'
+  };
+
+  function renderCard(el){
+    var retail=+el.dataset.retail, sale=el.dataset.sale?+el.dataset.sale:null, mayor=+el.dataset.mayor, min=el.dataset.min||1;
+    var pl=el.querySelector('.priceline'), sub=el.querySelector('.sub2'), tiers=el.querySelector('.tiers'), bsave=el.querySelector('.bsave');
+    var now = mode==='detal' ? (sale||retail) : mayor;
+    var old = mode==='detal' && sale ? retail : null;
+    if(pl) pl.innerHTML='<span class="now">'+fmt(now)+'</span>'+(old?'<span class="old">'+fmt(old)+'</span>':'');
+    if(sub) sub.textContent = mode==='detal' ? ('Mayorista desde '+fmt(mayor)) : ('Mín. '+min+' paq · precio por unidad');
+    if(tiers){ if(mode==='mayor'){ tiers.innerHTML='10+ <b>'+fmt(mayor)+'</b> · 50+ <b>'+fmt(mayor*0.92)+'</b> · 100+ <b>'+fmt(mayor*0.85)+'</b>'; tiers.classList.add('show'); } else tiers.classList.remove('show'); }
+    if(bsave){ var s=retail-now; bsave.textContent='Ahorra '+fmt(s>0?s:0); }
+    el.dataset.current=now;
+  }
+  function renderAll(){
+    document.querySelectorAll('.buy').forEach(renderCard);
+    document.querySelectorAll('.mt').forEach(function(b){b.classList.toggle('on',b.dataset.mode===mode)});
+    document.getElementById('modeHint').textContent=mode;
+    cart.forEach(function(it){if(it.el)it.price=+it.el.dataset.current});
+    renderCart();
+  }
+  document.querySelectorAll('.mt').forEach(function(b){b.addEventListener('click',function(){mode=b.dataset.mode;renderAll()})});
+
+  function addItem(el,qty){
+    var name=el.dataset.name,price=+el.dataset.current,cat=el.dataset.cat;
+    var ex=cart.find(function(i){return i.name===name});
+    if(ex){ex.qty+=qty}else{cart.push({name:name,price:price,qty:qty,el:el,cat:cat})}
+    renderCart();toast('Agregado al carrito');bump();
+  }
+  document.querySelectorAll('.add').forEach(function(btn){
+    btn.addEventListener('click',function(e){e.stopPropagation();addItem(btn.closest('.buy'),1)});
+  });
+
+  function bump(){var c=document.getElementById('cartCount');c.style.transform='scale(1.4)';setTimeout(function(){c.style.transform=''},160)}
+
+  function renderCart(){
+    var items=document.getElementById('ditems'),count=0,sub=0;
+    cart.forEach(function(i){count+=i.qty;sub+=i.price*i.qty});
+    document.getElementById('cartCount').textContent=count;
+    document.getElementById('subtotal').textContent=fmt(sub);
+    if(!cart.length){
+      items.innerHTML='<div class="empty">Tu carrito está vacío.<br>Explora las promos de la semana.<br><button class="btn btn-green" id="goShop">Ver promos</button></div>';
+      document.getElementById('goShop').addEventListener('click',function(){closeCart();location.hash='#promos'});
+    }else{
+      items.innerHTML=cart.map(function(i,idx){return '<div class="li"><div class="ph">'+i.cat.charAt(0)+'</div><div class="info"><h5>'+i.name+'</h5><div class="pr">'+fmt(i.price)+' c/u</div></div><div class="qty"><button data-i="'+idx+'" data-d="-1">–</button><span>'+i.qty+'</span><button data-i="'+idx+'" data-d="1">+</button></div></div>'}).join('');
+      items.querySelectorAll('.qty button').forEach(function(b){b.addEventListener('click',function(){var i=+b.dataset.i;cart[i].qty+=+b.dataset.d;if(cart[i].qty<=0)cart.splice(i,1);renderCart()})});
+    }
+    var rem=Math.max(0,FREE-sub),pct=Math.min(100,sub/FREE*100);
+    document.getElementById('shipFill').style.width=pct+'%';
+    document.getElementById('shipMsg').innerHTML=rem>0?('Te faltan <b>'+fmt(rem)+'</b> para envío gratis'):('🎉 <b>¡Envío gratis desbloqueado!</b>');
+  }
+
+  function openCart(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('open')}
+  function closeCart(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+  document.getElementById('openCart').addEventListener('click',openCart);
+  document.getElementById('closeCart').addEventListener('click',closeCart);
+  document.getElementById('overlay').addEventListener('click',closeCart);
+
+  var tt;
+  function toast(msg){var el=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;el.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){el.classList.remove('show')},1600)}
+
+  // filters
+  document.querySelectorAll('.chip').forEach(function(c){c.addEventListener('click',function(){
+    document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on');
+    var f=c.dataset.filter;
+    document.querySelectorAll('#promoGrid .card').forEach(function(card){card.classList.toggle('hide',!(f==='todos'||(card.dataset.tags||'').indexOf(f)>-1))});
+  })});
+
+  // QUICK VIEW
+  var qvEl=null,qvQty=1;
+  function openQV(el){
+    qvEl=el;qvQty=1;
+    document.getElementById('qvMedia').className='media '+(el.dataset.th||'th-a');
+    document.getElementById('qvMedia').innerHTML=(el.querySelector('.badge')?'<span class="badge">'+el.querySelector('.badge').textContent+'</span>':'')+'<svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.1" opacity=".8"><rect x="4" y="5" width="16" height="14" rx="1.5"/></svg>';
+    document.getElementById('qvCat').textContent=el.dataset.cat;
+    document.getElementById('qvName').textContent=el.dataset.name;
+    document.getElementById('qvDesc').textContent=DESC[el.dataset.cat]||'';
+    var retail=+el.dataset.retail,sale=el.dataset.sale?+el.dataset.sale:null,mayor=+el.dataset.mayor;
+    var now=mode==='detal'?(sale||retail):mayor, old=mode==='detal'&&sale?retail:null;
+    document.getElementById('qvPrice').innerHTML='<span class="now">'+fmt(now)+'</span>'+(old?'<span class="old">'+fmt(old)+'</span>':'');
+    document.getElementById('qvSub').textContent=mode==='detal'?('Mayorista desde '+fmt(mayor)):('Mín. '+(el.dataset.min||1)+' paquetes');
+    var qt=document.getElementById('qvTiers');
+    if(mode==='mayor'){qt.innerHTML='10+ <b>'+fmt(mayor)+'</b> · 50+ <b>'+fmt(mayor*0.92)+'</b> · 100+ <b>'+fmt(mayor*0.85)+'</b>';qt.classList.add('show')}else qt.classList.remove('show');
+    document.getElementById('qvQty').textContent='1';
+    document.getElementById('qv').classList.add('open');document.getElementById('qvOverlay').classList.add('open');
+  }
+  function closeQV(){document.getElementById('qv').classList.remove('open');document.getElementById('qvOverlay').classList.remove('open')}
+  document.querySelectorAll('.card.buy').forEach(function(card){
+    card.addEventListener('click',function(e){if(e.target.closest('.add'))return;openQV(card)});
+  });
+  document.getElementById('qvClose').addEventListener('click',closeQV);
+  document.getElementById('qvOverlay').addEventListener('click',closeQV);
+  document.getElementById('qvMinus').addEventListener('click',function(){qvQty=Math.max(1,qvQty-1);document.getElementById('qvQty').textContent=qvQty});
+  document.getElementById('qvPlus').addEventListener('click',function(){qvQty++;document.getElementById('qvQty').textContent=qvQty});
+  document.getElementById('qvAdd').addEventListener('click',function(){if(qvEl){addItem(qvEl,qvQty);closeQV();openCart()}});
+
+  // SAVINGS CALC
+  var spend=document.getElementById('spend');
+  function calc(){
+    var v=+spend.value, save=v*RATE, mayorSpend=v-save;
+    document.getElementById('spendVal').textContent=fmt(v).replace('.00','');
+    document.getElementById('bDetal').textContent=fmt(v).replace('.00','');
+    document.getElementById('bMayor').textContent=fmt(mayorSpend).replace('.00','');
+    document.getElementById('mayorFill').style.width=(mayorSpend/v*100)+'%';
+    document.getElementById('saveMo').textContent=fmt(save).replace('.00','')+' al mes';
+    document.getElementById('saveYr').textContent=fmt(save*12).replace('.00','');
+    var pb=MEMBER/RATE;
+    document.getElementById('payback').innerHTML='La membresía cuesta <b>'+fmt(MEMBER)+'/mes</b> — la recuperas comprando apenas <b>'+fmt(pb).replace('.00','')+'</b> al mes.';
+  }
+  spend.addEventListener('input',calc);calc();
+
+  // AD CAROUSEL
+  var idx=0,slides=document.querySelectorAll('.adslide').length,track=document.getElementById('adtrack'),dots=document.getElementById('adDots'),auto;
+  for(var i=0;i<slides;i++){(function(i){var d=document.createElement('button');if(i===0)d.className='on';d.addEventListener('click',function(){go(i)});dots.appendChild(d)})(i)}
+  function go(n){idx=(n+slides)%slides;track.style.transform='translateX(-'+(idx*100)+'%)';dots.querySelectorAll('button').forEach(function(b,j){b.classList.toggle('on',j===idx)})}
+  document.getElementById('adNext').addEventListener('click',function(){go(idx+1);restart()});
+  document.getElementById('adPrev').addEventListener('click',function(){go(idx-1);restart()});
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function start(){if(!reduce)auto=setInterval(function(){go(idx+1)},4500)}
+  function restart(){clearInterval(auto);start()}
+  var car=document.getElementById('adcar');
+  car.addEventListener('mouseenter',function(){clearInterval(auto)});
+  car.addEventListener('mouseleave',start);
+  start();
+
+  // countdown
+  function target(){var d=new Date();var day=d.getDay();var add=(7-day)%7;if(add===0&&d.getHours()>=23)add=7;d.setDate(d.getDate()+add);d.setHours(23,59,59,0);return d}
+  var end=target();
+  function tick(){var diff=end-new Date();if(diff<0)diff=0;var dd=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4),s=Math.floor(diff%6e4/1e3);var p=function(x){return(x<10?'0':'')+x};document.getElementById('clock').textContent=(dd>0?dd+'d ':'')+p(h)+':'+p(m)+':'+p(s)}
+  tick();setInterval(tick,1000);
+
+  // reveal + menu
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  document.querySelector('.burger').addEventListener('click',function(){var n=document.querySelector('nav.primary'),open=n.style.display==='flex';n.style.cssText=open?'':'display:flex;position:absolute;top:72px;left:0;right:0;background:#fff;flex-direction:column;padding:16px 24px;gap:14px;border-bottom:1px solid var(--line)'});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeCart();closeQV()}});
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
