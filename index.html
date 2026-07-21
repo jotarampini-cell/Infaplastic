@@ -1170,7 +1170,6 @@
   <div class="ditems" id="ditems"></div>
   <div class="dfoot"><div class="row"><span class="lbl">Subtotal</span><span class="amt" id="subtotal">$0.00</span></div><button class="btn btn-green" id="startCheckoutBtn">Proceder al pago</button><div class="modehint">Viendo precios de <b id="modeHint">detal</b></div></div>
 </aside>
-</aside>
 
 <!-- QUICKVIEW MODAL -->
 <div class="overlay" id="qvOverlay"></div>
@@ -1295,7 +1294,7 @@
                 <span class="chk-section-title">¿En qué ciudad te encuentras?</span>
               </div>
               <div class="chk-input-group">
-                <select class="chk-input" id="city-select" onchange="onCityChange()">
+                <select class="chk-input" id="city-select" onchange="onCityChange(); event.stopPropagation();">
                   <option value="">Selecciona tu ciudad</option>
                   <option value="caracas">Caracas</option>
                   <option value="valencia">Valencia</option>
@@ -1363,22 +1362,22 @@
                 <span class="chk-section-title">Elige empresa de transporte</span>
               </div>
               <div class="chk-grid2" style="margin-bottom:16px;">
-                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-MRW" onclick="selectTransport('MRW')">
+                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-MRW" onclick="selectTransport('MRW'); event.stopPropagation();">
                   <div class="chk-radio" id="radio-tr-MRW" style="margin-bottom:6px;"></div>
                   <div style="font-size:13px;font-weight:700;">MRW</div>
                   <div style="font-size:11px;color:#6b7280;">2–3 días</div>
                 </div>
-                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Zoom" onclick="selectTransport('Zoom')">
+                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Zoom" onclick="selectTransport('Zoom'); event.stopPropagation();">
                   <div class="chk-radio" id="radio-tr-Zoom" style="margin-bottom:6px;"></div>
                   <div style="font-size:13px;font-weight:700;">Zoom</div>
                   <div style="font-size:11px;color:#6b7280;">24–48 h</div>
                 </div>
-                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Tealca" onclick="selectTransport('Tealca')">
+                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Tealca" onclick="selectTransport('Tealca'); event.stopPropagation();">
                   <div class="chk-radio" id="radio-tr-Tealca" style="margin-bottom:6px;"></div>
                   <div style="font-size:13px;font-weight:700;">Tealca</div>
                   <div style="font-size:11px;color:#6b7280;">3–4 días</div>
                 </div>
-                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Domesa" onclick="selectTransport('Domesa')">
+                <div class="chk-card chk-card-interactive" style="padding:12px;" id="tr-Domesa" onclick="selectTransport('Domesa'); event.stopPropagation();">
                   <div class="chk-radio" id="radio-tr-Domesa" style="margin-bottom:6px;"></div>
                   <div style="font-size:13px;font-weight:700;">Domesa</div>
                   <div style="font-size:11px;color:#6b7280;">3–5 días</div>
@@ -1457,7 +1456,7 @@
                 <span class="chk-section-title">Selecciona la tienda</span>
               </div>
               <div id="stores-list">
-                <div class="chk-card chk-card-interactive" style="margin-bottom:10px;" id="store-Chacao" onclick="selectStore('Chacao')">
+                <div class="chk-card chk-card-interactive" style="margin-bottom:10px;" id="store-Chacao" onclick="selectStore('Chacao'); event.stopPropagation();">
                   <div class="flex items-center gap-3">
                     <div class="chk-radio" id="radio-store-Chacao"></div>
                     <div class="flex-1">
@@ -1466,7 +1465,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="chk-card chk-card-interactive" style="margin-bottom:10px;" id="store-LasMercedes" onclick="selectStore('LasMercedes')">
+                <div class="chk-card chk-card-interactive" style="margin-bottom:10px;" id="store-LasMercedes" onclick="selectStore('LasMercedes'); event.stopPropagation();">
                   <div class="flex items-center gap-3">
                     <div class="chk-radio" id="radio-store-LasMercedes"></div>
                     <div class="flex-1">
@@ -1475,7 +1474,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="chk-card chk-card-interactive" id="store-LaCastellana" onclick="selectStore('LaCastellana')">
+                <div class="chk-card chk-card-interactive" id="store-LaCastellana" onclick="selectStore('LaCastellana'); event.stopPropagation();">
                   <div class="flex items-center gap-3">
                     <div class="chk-radio" id="radio-store-LaCastellana"></div>
                     <div class="flex-1">
@@ -1491,12 +1490,12 @@
                   <span class="chk-section-title">¿Cómo deseas pagar?</span>
                 </div>
                 <div class="chk-grid2">
-                  <div class="chk-card chk-card-interactive" style="padding:12px;" id="ppay-online" onclick="selectPickupPay('online')">
+                  <div class="chk-card chk-card-interactive" style="padding:12px;" id="ppay-online" onclick="selectPickupPay('online'); event.stopPropagation();">
                     <div class="chk-radio" id="radio-ppay-online" style="margin-bottom:6px;"></div>
                     <div style="font-size:13px;font-weight:700;">💳 Pago Anticipado</div>
                     <div style="font-size:11px;color:#6b7280;margin-top:3px;">Paga ahora y retira</div>
                   </div>
-                  <div class="chk-card chk-card-interactive" style="padding:12px;" id="ppay-store" onclick="selectPickupPay('store')">
+                  <div class="chk-card chk-card-interactive" style="padding:12px;" id="ppay-store" onclick="selectPickupPay('store'); event.stopPropagation();">
                     <div class="chk-radio" id="radio-ppay-store" style="margin-bottom:6px;"></div>
                     <div style="font-size:13px;font-weight:700;">👛 Pagar en Tienda</div>
                     <div style="font-size:11px;color:#6b7280;margin-top:3px;">Reserva y paga al retirar</div>
@@ -1906,10 +1905,10 @@
     if (STATE.step === 'entrega') {
       if (!STATE.mode) { alert('Por favor selecciona una modalidad de entrega.'); return; }
       if (STATE.mode === 'local' && (!STATE.city || !STATE.zone || !document.getElementById('local-address').value.trim())) {
-        alert('Por favor completa todos los datos de entrega local.'); return;
+        alert('Por favor completa todos los datos de entrega local (ciudad, zona y dirección).'); return;
       }
-      if (STATE.mode === 'national' && (!STATE.transport || !STATE.natBranch)) {
-        alert('Por favor completa todos los datos de envío nacional.'); return;
+      if (STATE.mode === 'national' && (!STATE.transport || !STATE.natState || !STATE.natCity || !STATE.natBranch)) {
+        alert('Por favor completa todos los datos de envío nacional (empresa, estado, ciudad y sucursal).'); return;
       }
       if (STATE.mode === 'pickup' && (!STATE.store || !STATE.pickupPay)) {
         alert('Por favor selecciona tienda y método de pago en tienda.'); return;
@@ -1928,6 +1927,12 @@
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('pay-date').value = today;
     } else if (STATE.step === 'pago') {
+      if (!STATE.method) {
+        alert('Por favor selecciona un método de pago.'); return;
+      }
+      if (STATE.method !== 'divisas' && !STATE.hasFile) {
+        alert('Por favor sube tu comprobante de pago para continuar.'); return;
+      }
       goToConfirmacion();
     }
   };
@@ -2154,6 +2159,13 @@
   window.openCheckout = function() {
     closeCart();
     closeMobileNav();
+    if (!cart.length) {
+      cart = [
+        { name: 'Vasos Térmicos 8oz (Paq. 50u)', price: 5.20, qty: 2, cat: 'Vasos' },
+        { name: 'Envase Bisagra 500ml (Paq. 100u)', price: 8.50, qty: 1, cat: 'Envases' }
+      ];
+      renderCart();
+    }
     updateTotals();
     document.getElementById('checkoutOverlay').classList.add('open');
   };
