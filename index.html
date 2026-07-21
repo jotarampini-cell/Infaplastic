@@ -216,9 +216,11 @@
   .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column;cursor:pointer}
   .card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(35,31,32,.10)}
   .card.hide{display:none}
-  .card .thumb{aspect-ratio:1/1;position:relative;display:grid;place-items:center}
-  .card .thumb .badge{position:absolute;top:12px;left:12px;background:var(--carbon);color:var(--neon);font-family:var(--display);font-stretch:125%;font-weight:800;font-size:13px;padding:5px 10px;border-radius:8px}
-  .card .thumb .qv{position:absolute;bottom:10px;right:10px;background:#fff;border:1px solid var(--line);border-radius:100px;font-size:12px;font-weight:600;padding:6px 12px;opacity:0;transform:translateY(6px);transition:.18s}
+  .card .thumb{aspect-ratio:1/1;position:relative;display:grid;place-items:center;overflow:hidden}
+  .card .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s}
+  .card:hover .thumb img{transform:scale(1.04)}
+  .card .thumb .badge{position:absolute;top:12px;left:12px;background:var(--carbon);color:var(--neon);font-family:var(--display);font-stretch:125%;font-weight:800;font-size:13px;padding:5px 10px;border-radius:8px;z-index:2}
+  .card .thumb .qv{position:absolute;bottom:10px;right:10px;background:#fff;border:1px solid var(--line);border-radius:100px;font-size:12px;font-weight:600;padding:6px 12px;opacity:0;transform:translateY(6px);transition:.18s;z-index:2}
   .card:hover .thumb .qv{opacity:1;transform:none}
   .card .body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
   .card .cat{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--grey);font-weight:600}
@@ -648,22 +650,46 @@
       <button class="chip" data-filter="listo">Listo para enviar</button>
     </div>
     <div class="cards" id="promoGrid">
-      <div class="card buy" data-name="Vaso térmico 8oz (x50)" data-cat="Vasos" data-retail="3.00" data-sale="2.40" data-mayor="1.90" data-min="10" data-tags="ofertas listo" data-th="th-a">
-        <div class="thumb th-a"><span class="badge">−20%</span><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><path d="M6 3h12l-1.5 17a1 1 0 0 1-1 .9H8.5a1 1 0 0 1-1-.9L6 3z"/><path d="M5 8h14"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Vasos</div><h4>Vaso térmico 8oz (x50)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Producto 1: Vasos Kraft -->
+      <div class="card buy" data-name="Vasos Kraft 8oz – Imp.Max (x40x25)" data-cat="Vasos" data-retail="6.50" data-sale="5.20" data-mayor="4.10" data-min="5" data-tags="ofertas listo" data-th="th-a" data-code="VK8OZMI">
+        <div class="thumb" style="background:#f5f0e8">
+          <span class="badge">−20%</span>
+          <img src="Images/products/prod_kraft.jpg" alt="Vasos Kraft 8oz Imp.Max" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Vasos · Cód. VK8OZMI</div><h4>Vasos Kraft 8oz – Imp.Max</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
-      <div class="card buy" data-name="Clamshell 3 divisiones (x100)" data-cat="Envases" data-retail="8.10" data-sale="6.90" data-mayor="5.40" data-min="6" data-tags="ofertas listo" data-th="th-b">
-        <div class="thumb th-b"><span class="badge">−15%</span><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#3a3d38" stroke-width="1.4"><rect x="3" y="7" width="18" height="12" rx="1.5"/><path d="M3 11h18"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Envases</div><h4>Clamshell 3 divisiones (x100)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Producto 2: Deligourmet Hermético 8oz -->
+      <div class="card buy" data-name="Deligourmet Hermético 8oz Ovalado (x200)" data-cat="Envases" data-retail="9.80" data-sale="8.30" data-mayor="6.90" data-min="4" data-tags="ofertas listo bio" data-th="th-b" data-code="DL80V">
+        <div class="thumb" style="background:#e8f0e8">
+          <span class="badge">−15%</span>
+          <img src="Images/products/prod_deligourmet.jpg" alt="Deligourmet Hermético 8oz" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Envases · Cód. DL80V</div><h4>Deligourmet Hermético 8oz Ovalado</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
-      <div class="card buy" data-name="Cubiertos compostables (x100)" data-cat="Cubiertos" data-retail="3.10" data-mayor="2.45" data-min="8" data-tags="bio listo" data-th="th-c">
-        <div class="thumb th-c"><span class="badge">Nuevo</span><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10M16 3c-1.5 0-2 2-2 4s.5 4 2 4v10"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Cubiertos</div><h4>Cubiertos compostables (x100)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Producto 3: Copas Veneciana -->
+      <div class="card buy" data-name="Copas Veneciana Transparente (x500)" data-cat="Copas" data-retail="7.40" data-sale="5.90" data-mayor="4.80" data-min="6" data-tags="ofertas listo" data-th="th-c" data-code="COPA03">
+        <div class="thumb" style="background:#f0f4f8">
+          <span class="badge">−20%</span>
+          <img src="Images/products/prod_copas.jpg" alt="Copas Veneciana" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Copas · Cód. COPA03</div><h4>Copas Veneciana Transparente 3–12oz</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
-      <div class="card buy" data-name="Servilletas dispensador (x500)" data-cat="Higiene" data-retail="2.20" data-mayor="1.70" data-min="12" data-tags="ofertas listo" data-th="th-d">
-        <div class="thumb th-d"><span class="badge">3x2</span><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#4A4B4C" stroke-width="1.4"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M8 5v14M12 5v14M16 5v14"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Higiene</div><h4>Servilletas dispensador (x500)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Producto 4: Platos Plásticos -->
+      <div class="card buy" data-name="Platos Plásticos Blanco y Negro #8 (x50paq)" data-cat="Platos" data-retail="4.20" data-mayor="3.30" data-min="8" data-tags="listo" data-th="th-d" data-code="PL-PT#8">
+        <div class="thumb" style="background:#e8ffe8">
+          <img src="Images/products/prod_platos.jpg" alt="Platos Plásticos" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Platos · Cód. PL-PT#8</div><h4>Platos Plásticos #8 – Blanco &amp; Negro</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
+
     </div>
   </div>
 </section>
@@ -729,26 +755,61 @@
       <div class="head-tools"><div class="modetoggle" role="group" aria-label="Modo de precio"><span class="lbl">Precios</span><button class="mt on" data-mode="detal">Detal</button><button class="mt" data-mode="mayor">Mayor</button></div></div>
     </div>
     <div class="rail" id="bestGrid">
-      <div class="card buy" data-name="Vaso frío 16oz + tapa (x50)" data-cat="Vasos" data-retail="3.80" data-mayor="3.05" data-min="10" data-th="th-c">
-        <div class="thumb th-c"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><path d="M6 3h12l-1.5 17a1 1 0 0 1-1 .9H8.5a1 1 0 0 1-1-.9L6 3z"/><path d="M5 8h14"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Vasos</div><h4>Vaso frío 16oz + tapa (x50)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Más vendido 1: Vasos PET Domo 16oz -->
+      <div class="card buy" data-name="Vaso PET Domo 16oz (x1000)" data-cat="Vasos" data-retail="5.80" data-mayor="4.60" data-min="5" data-th="th-c" data-code="VP/D16OZ">
+        <div class="thumb" style="background:#eaf4ff">
+          <img src="Images/products/prod_pet.jpg" alt="Vaso PET Domo 16oz" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Vasos · Cód. VP/D16OZ</div><h4>Vaso PET Domo 16oz</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
-      <div class="card buy" data-name="Bolsa camiseta reforzada (x100)" data-cat="Bolsas" data-retail="1.80" data-mayor="1.40" data-min="20" data-th="th-a">
-        <div class="thumb th-a"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Bolsas</div><h4>Bolsa camiseta reforzada (x100)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Más vendido 2: Cubiertos Granel Clase A -->
+      <div class="card buy" data-name="Cubiertos Granel Clase-A Blancos (x1000)" data-cat="Cubiertos" data-retail="3.60" data-mayor="2.80" data-min="8" data-th="th-a" data-code="CU/CP14">
+        <div class="thumb" style="background:#f0f5f0">
+          <img src="Images/products/prod_cubiertos.jpg" alt="Cubiertos Granel Clase A" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Cubiertos · Cód. CU/CP14</div><h4>Cubiertos Granel Clase-A Blancos</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
-      <div class="card buy" data-name="Bandeja aluminio 1 lb (x50)" data-cat="Envases" data-retail="5.40" data-mayor="4.35" data-min="6" data-th="th-b">
-        <div class="thumb th-b"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#3a3d38" stroke-width="1.4"><rect x="3" y="7" width="18" height="12" rx="1.5"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Envases</div><h4>Bandeja aluminio 1 lb (x50)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Más vendido 3: Tortera Alta Gourmet -->
+      <div class="card buy" data-name="Tortera Alta Gourmet 29x23cm (x20)" data-cat="Torteras" data-retail="8.90" data-mayor="7.20" data-min="3" data-th="th-b" data-code="T/G59CT">
+        <div class="thumb" style="background:#f5eef8">
+          <img src="Images/products/prod_torteras.jpg" alt="Tortera Alta Gourmet" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Torteras · Cód. T/G59CT</div><h4>Tortera Alta Gourmet 29x23cm</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
-      <div class="card buy" data-name="Set cuchara-tenedor (x250)" data-cat="Cubiertos" data-retail="4.60" data-mayor="3.70" data-min="8" data-th="th-d">
-        <div class="thumb th-d"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#4A4B4C" stroke-width="1.4"><path d="M6 3v8a2 2 0 0 0 4 0V3M8 11v10"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Cubiertos</div><h4>Set cuchara-tenedor (x250)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Más vendido 4: Bandejas PET -->
+      <div class="card buy" data-name="Bandejas PET Doradas 20x28.5cm (x100)" data-cat="Bandejas" data-retail="6.10" data-mayor="4.90" data-min="4" data-th="th-d" data-code="BA-DP2">
+        <div class="thumb" style="background:#fef9e8">
+          <img src="Images/products/prod_bandejas.jpg" alt="Bandejas PET Doradas" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Bandejas · Cód. BA-DP2</div><h4>Bandejas PET Doradas 20x28.5cm</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
-      <div class="card buy" data-name="Guantes vinilo talla M (x100)" data-cat="Higiene" data-retail="3.30" data-mayor="2.65" data-min="10" data-th="th-a">
-        <div class="thumb th-a"><svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#0a8f00" stroke-width="1.4"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M8 5v14M12 5v14"/></svg><span class="qv">Vista rápida</span></div>
-        <div class="body"><div class="cat">Higiene</div><h4>Guantes vinilo talla M (x100)</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+
+      <!-- Más vendido 5: Bowl Hermético 32oz -->
+      <div class="card buy" data-name="Bowl Hermético 32oz para Microondas (x150)" data-cat="Envases" data-retail="7.80" data-mayor="6.20" data-min="4" data-th="th-a" data-code="EN-GO925">
+        <div class="thumb" style="background:#eafaf1">
+          <img src="Images/products/prod_bowl.jpg" alt="Bowl Hermético 32oz" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Envases · Cód. EN-GO925</div><h4>Bowl Hermético 32oz – Apto Microondas</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
       </div>
+
+      <!-- Más vendido 6: Vasos Kraft Doble Capa -->
+      <div class="card buy" data-name="Vasos Kraft 7oz Doble Capa (x1000)" data-cat="Vasos" data-retail="5.40" data-mayor="4.30" data-min="5" data-th="th-c" data-code="VK7OZND">
+        <div class="thumb" style="background:#f5f0e8">
+          <img src="Images/products/prod_kraft.jpg" alt="Vasos Kraft 7oz Doble Capa" style="width:100%;height:100%;object-fit:cover;border-radius:0">
+          <span class="qv">Vista rápida</span>
+        </div>
+        <div class="body"><div class="cat">Vasos · Cód. VK7OZND</div><h4>Vasos Kraft 7oz – Doble Capa</h4><div class="priceline"></div><div class="sub2"></div><div class="tiers"></div><button class="add" type="button">Agregar</button></div>
+      </div>
+
     </div>
   </div>
 </section>

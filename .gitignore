@@ -23,3 +23,13 @@ yarn-error.log*
 tmp/
 *.tmp
 *.log
+
+# Catalogo y archivos temporales del proyecto
+catalogo.pdf
+"Catalogo de productos/"
+Videos/
+
+# Imagenes temporales extraídas del PDF (no necesarias en producción)
+Images/products/p0*/
+Images/products/page_render_*
+Images/products/full_*
