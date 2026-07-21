@@ -182,7 +182,7 @@
   .adslide h3{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(26px,4.6vw,52px);line-height:.92}
   .adslide p{font-size:15px;margin:12px 0 20px;max-width:420px;opacity:.92}
   .ad1{background:linear-gradient(120deg,#0EAE00,#83F700)}
-  .ad1 .eyebrow,.ad1 h3,.ad1 p{color:#0a2600}
+  .ad1 .eyebrow,.ad1 h3,.ad1 p{color:#0a0a00}
   .ad1 .eyebrow{color:#0a3d00}
   .ad2{background:linear-gradient(120deg,#2c2928,#141212)}
   .ad3{background:linear-gradient(120deg,#0ED100,#0a8f00)}
@@ -280,13 +280,35 @@
   .b2b .stats .s .l{font-size:13.5px;color:#cfd2ce;margin-top:6px}
   .b2b .cta-row{display:flex;gap:12px;flex-wrap:wrap}
 
-  /* PROOF */
-  .proof .wrap{text-align:center}
-  .proof .stars{color:var(--green-action);font-size:14px;letter-spacing:.12em;font-weight:700}
-  .proof blockquote{font-family:var(--display);font-stretch:100%;font-weight:700;font-size:clamp(22px,3.4vw,38px);line-height:1.15;max-width:16ch;margin:18px auto 20px;letter-spacing:-.01em}
-  .proof cite{font-style:normal;color:var(--grey);font-size:14px}
-  .logos{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:center;align-items:center;margin-top:44px;opacity:.7}
-  .logos span{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:17px;color:var(--grey)}
+  /* HIGH IMPACT PROOF & TESTIMONIALS */
+  .proof-section{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);width:100%;overflow:hidden}
+  .rating-badge{display:inline-flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);padding:8px 18px;border-radius:100px;font-size:13.5px;margin-top:14px;box-shadow:0 4px 12px rgba(0,0,0,0.03)}
+  .rating-badge .stars{color:#FFB800;letter-spacing:.08em;font-size:14px}
+  .rating-badge .score b{color:var(--green-action)}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:42px;width:100%}
+  .testi-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .22s,box-shadow .22s,border-color .22s;position:relative}
+  .testi-card:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(35,31,32,0.08);border-color:var(--green-action)}
+  .testi-card.featured{border:2px solid var(--green-action);background:linear-gradient(180deg,#ffffff 0%,var(--tint) 100%)}
+  .testi-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .testi-header .stars{color:#FFB800;font-size:14px;letter-spacing:.08em}
+  .testi-tag{font-size:11.5px;font-weight:700;background:var(--tint);color:var(--green-action);border:1px solid rgba(14,209,0,0.25);padding:4px 10px;border-radius:100px}
+  .testi-tag.bio-tag{background:#eafce2;color:#0a8f00}
+  .testi-text{font-size:15px;line-height:1.6;color:var(--carbon);margin-bottom:24px;font-style:italic}
+  .testi-user{display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:16px}
+  .avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
+  .av-a{background:linear-gradient(135deg,#0ED100,#0a8f00)}
+  .av-b{background:linear-gradient(135deg,#231F20,#4A4B4C)}
+  .av-c{background:linear-gradient(135deg,#7fe600,#0EAE00);color:var(--carbon)}
+  .user-info b{display:block;font-size:14.5px;color:var(--carbon);line-height:1.2}
+  .user-info span{font-size:12.5px;color:var(--grey)}
+
+  /* BRANDS SHOWCASE */
+  .brands-showcase{margin-top:56px;text-align:center;border-top:1px solid var(--line);padding-top:36px}
+  .brands-title{font-family:var(--display);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.08em;color:var(--grey);margin-bottom:22px}
+  .brand-pills{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center}
+  .b-pill{background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:10px 22px;font-family:var(--display);font-stretch:125%;font-weight:800;font-size:15px;text-transform:uppercase;color:var(--carbon);display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,0.03);transition:transform .18s,border-color .18s,background .18s,color .18s;cursor:default}
+  .b-pill:hover{transform:translateY(-3px);border-color:var(--green-action);background:var(--carbon);color:var(--neon)}
+  .b-icon{font-size:16px}
 
   /* RESOURCES */
   .res-band{background:var(--paper-2);width:100%;overflow:hidden}
@@ -406,6 +428,7 @@
     .head-tools{width:100%;justify-content:space-between}
     .tiles,.cards{grid-template-columns:repeat(2,1fr)}
     .bundles{grid-template-columns:repeat(2,1fr);gap:14px}
+    .testi-grid{grid-template-columns:1fr;gap:16px}
     .res{grid-template-columns:1fr}
     .trust .wrap{grid-template-columns:repeat(2,1fr);gap:12px}
     .dual,.member .wrap,.savings .wrap,.b2b .wrap,.news .wrap{grid-template-columns:1fr;gap:26px}
@@ -433,6 +456,11 @@
     .bundle .binc{padding:14px;gap:7px}
     .bundle .binc li{font-size:12px}
     .bundle .bfoot{padding:0 14px 14px}
+
+    .testi-card{padding:20px 18px}
+    .testi-text{font-size:14px;margin-bottom:18px}
+    .brand-pills{gap:8px}
+    .b-pill{font-size:12.5px;padding:7px 14px}
 
     .calc-card{padding:20px 16px}
     .savings .wrap{padding:44px 16px}
@@ -744,13 +772,85 @@
   </div>
 </section>
 
-<!-- PROOF -->
-<section class="block proof reveal">
+<!-- HIGH IMPACT PROOF & TESTIMONIALS -->
+<section class="block proof-section reveal" id="testimonios">
   <div class="wrap">
-    <div class="stars">★★★★★</div>
-    <blockquote>“Cambiamos de proveedor hace 6 meses. La calidad de los envases es excelente y nunca nos fallan con los tiempos.”</blockquote>
-    <cite>— Carlos Mendoza, Gerente de Operaciones en Grupo Gastronómico CCS</cite>
-    <div class="logos"><span>Burgers & Co</span><span>·</span><span>Café Central</span><span>·</span><span>Sushi Express</span><span>·</span><span>Hotel Eurobuilding</span></div>
+    <div class="sec-head" style="justify-content:center;text-align:center;flex-direction:column;align-items:center">
+      <div class="eyebrow">Confianza Demostrada</div>
+      <h2 class="display" style="margin-top:8px;max-width:20ch">Respaldados por quienes mueven la industria</h2>
+      <div class="rating-badge">
+        <span class="stars">★★★★★</span>
+        <span class="score"><b>4.9 / 5.0</b> en más de 1.200 negocios satisfechos en Venezuela</span>
+      </div>
+    </div>
+
+    <!-- TESTIMONIAL CARDS GRID -->
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-header">
+          <div class="stars">★★★★★</div>
+          <span class="testi-tag">⚡ Ahorro del 25%</span>
+        </div>
+        <blockquote class="testi-text">
+          “Reducimos un 25% nuestros costos en empaques para delivery sin sacrificar rigidez. La logística de despacho en 24h a nivel nacional nos salvó en temporada alta.”
+        </blockquote>
+        <div class="testi-user">
+          <div class="avatar av-a">CM</div>
+          <div class="user-info">
+            <b>Carlos Mendoza</b>
+            <span>Gerente de Operaciones · <i>Grupo Gastronómico CCS</i></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card featured">
+        <div class="testi-header">
+          <div class="stars">★★★★★</div>
+          <span class="testi-tag bio-tag">🌿 Línea Eco 100%</span>
+        </div>
+        <blockquote class="testi-text">
+          “Nuestros clientes notaron de inmediato la calidad y elegancia de los vasos biodegradables. Infaplastic nos garantiza inventario permanente sin fallas.”
+        </blockquote>
+        <div class="testi-user">
+          <div class="avatar av-b">MS</div>
+          <div class="user-info">
+            <b>Mariana Silva</b>
+            <span>Directora General · <i>Café Central & Co.</i></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-header">
+          <div class="stars">★★★★★</div>
+          <span class="testi-tag">📦 +5.000 un/mes</span>
+        </div>
+        <blockquote class="testi-text">
+          “Comprar por volumen con los precios de mayorista transformó nuestro margen de reventa. La atención directa y facturación fiscal facilitan toda la operación.”
+        </blockquote>
+        <div class="testi-user">
+          <div class="avatar av-c">RG</div>
+          <div class="user-info">
+            <b>Roberto Gómez</b>
+            <span>Director de Compras · <i>Distribuidora EuroAlimentos</i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRANDS SHOWCASE (MARCAS IMPACTANTES) -->
+    <div class="brands-showcase">
+      <div class="brands-title">Marcas líderes que equipan sus negocios con Infaplastic</div>
+      <div class="brand-pills">
+        <div class="b-pill"><span class="b-icon">🍔</span> Burgers & Co</div>
+        <div class="b-pill"><span class="b-icon">☕</span> Café Central</div>
+        <div class="b-pill"><span class="b-icon">🍣</span> Sushi Express</div>
+        <div class="b-pill"><span class="b-icon">🏨</span> Eurobuilding CCS</div>
+        <div class="b-pill"><span class="b-icon">🍗</span> Arturo's Express</div>
+        <div class="b-pill"><span class="b-icon">🍕</span> Plaza Pizza</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -834,6 +934,7 @@
       <a href="#b2b" class="mobile-link"><span>🏢</span> Precios Mayoristas</a>
       <a href="#member" class="mobile-link"><span>⭐</span> Membresía Infaplastic+</a>
       <a href="#combos" class="mobile-link"><span>🔥</span> Promos & Combos</a>
+      <a href="#testimonios" class="mobile-link"><span>💬</span> Testimonios & Clientes</a>
       <a href="#recursos" class="mobile-link"><span>📚</span> Recursos & Guías</a>
     </nav>
     <div class="mobile-nav-actions">
