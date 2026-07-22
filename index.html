@@ -2144,13 +2144,13 @@
     if (STATE.mode === m) return;
     ['local','national','pickup'].forEach(x => {
       var card = document.getElementById('mode-' + x); if(card) card.classList.remove('selected');
-      var rad = document.getElementById('radio-' + x); if(rad) { rad.classList.remove('selected'); rad.innerHTML = ''; }
+      var rad = document.getElementById('radio-' + x); if(rad) { rad.classList.remove('selected'); rad.innerHTML = '<div class="radio-dot"></div>'; }
       var body = document.getElementById('body-' + x); if(body) body.classList.remove('open');
     });
     STATE.mode = m;
     shippingCost = 0;
     var targetCard = document.getElementById('mode-' + m); if(targetCard) targetCard.classList.add('selected');
-    var targetRad = document.getElementById('radio-' + m); if(targetRad) { targetRad.classList.add('selected'); targetRad.innerHTML = '<div class="chk-radio-dot"></div>'; }
+    var targetRad = document.getElementById('radio-' + m); if(targetRad) { targetRad.classList.add('selected'); targetRad.innerHTML = '<div class="radio-dot"></div>'; }
     var targetBody = document.getElementById('body-' + m); if(targetBody) targetBody.classList.add('open');
     updateTotals();
   };
@@ -2159,17 +2159,22 @@
     STATE.city = document.getElementById('city-select').value;
     STATE.zone = null;
     const zoneEl = document.getElementById('zone-select');
-    zoneEl.innerHTML = '<option value="">Selecciona la zona</option>';
-    if (STATE.city && ZONES[STATE.city]) {
-      ZONES[STATE.city].forEach(z => {
-        const o = document.createElement('option');
-        o.value = z.id; o.textContent = z.name + ' — $' + z.cost;
-        zoneEl.appendChild(o);
-      });
+    if (zoneEl) {
+      zoneEl.innerHTML = '<option value="">Selecciona la zona</option>';
+      if (STATE.city && ZONES[STATE.city]) {
+        ZONES[STATE.city].forEach(z => {
+          const o = document.createElement('option');
+          o.value = z.id; o.textContent = z.name + ' — $' + z.cost;
+          zoneEl.appendChild(o);
+        });
+      }
     }
-    document.getElementById('zone-section').classList.remove('chk-dimmed');
-    document.getElementById('address-section').classList.add('chk-dimmed');
-    document.getElementById('local-summary').classList.add('hidden');
+    var zSec = document.getElementById('zone-section');
+    if(zSec) { zSec.classList.remove('dimmed'); zSec.classList.remove('chk-dimmed'); }
+    var aSec = document.getElementById('address-section');
+    if(aSec) { aSec.classList.add('dimmed'); aSec.classList.add('chk-dimmed'); }
+    var lSum = document.getElementById('local-summary');
+    if(lSum) lSum.classList.add('hidden');
     shippingCost = 0; updateTotals();
   };
 
@@ -2177,17 +2182,23 @@
     const zid = document.getElementById('zone-select').value;
     if (!STATE.city || !zid) return;
     const z = ZONES[STATE.city].find(x => x.id === zid);
-    STATE.zone = zid;
-    document.getElementById('address-section').classList.remove('chk-dimmed');
-    document.getElementById('sum-zone').textContent = z.name;
-    document.getElementById('sum-cost').textContent = '$' + z.cost;
-    shippingCost = z.cost; updateTotals();
+    if (z) {
+      STATE.zone = zid;
+      var aSec = document.getElementById('address-section');
+      if(aSec) { aSec.classList.remove('dimmed'); aSec.classList.remove('chk-dimmed'); }
+      var sz = document.getElementById('sum-zone'); if(sz) sz.textContent = z.name;
+      var sc = document.getElementById('sum-cost'); if(sc) sc.textContent = '$' + z.cost;
+      shippingCost = z.cost; updateTotals();
+      checkLocalReady();
+    }
   };
 
   window.checkLocalReady = function() {
-    const addr = document.getElementById('local-address').value.trim();
+    const addrEl = document.getElementById('local-address');
+    const addr = addrEl ? addrEl.value.trim() : '';
     if (addr && STATE.zone) {
-      document.getElementById('local-summary').classList.remove('hidden');
+      var lSum = document.getElementById('local-summary');
+      if(lSum) lSum.classList.remove('hidden');
     }
   };
 
@@ -2196,121 +2207,111 @@
   window.onNatBranch = function() { window.onNatBranchChange(); };
 
   window.selectTransport = function(e, t) {
-    if(e && e.stopPropagation) e.stopPropagation();
+    if (typeof e === 'string' && !t) { t = e; }
+    if (e && e.stopPropagation) e.stopPropagation();
     STATE.transport = t;
     ['MRW','Zoom','Tealca','Domesa'].forEach(x => {
       var c = document.getElementById('tr-' + x); if(c) c.classList.remove('selected');
-      var r = document.getElementById('radio-tr-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
+      var r = document.getElementById('radio-tr-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = '<div class="radio-dot"></div>'; }
     });
     var trEl = document.getElementById('tr-' + t); if(trEl) trEl.classList.add('selected');
     var radEl = document.getElementById('radio-tr-' + t); if(radEl) { radEl.classList.add('selected'); radEl.innerHTML = '<div class="radio-dot"></div>'; }
     var dest = document.getElementById('nat-dest') || document.getElementById('nat-dest-section');
-    if(dest) dest.classList.remove('dimmed');
+    if(dest) { dest.classList.remove('dimmed'); dest.classList.remove('chk-dimmed'); }
     updateNatSummary();
   };
 
+  window.onNatStateChange = function() {
+    const stateEl = document.getElementById('nat-state');
+    STATE.natState = stateEl ? stateEl.value : null;
+    STATE.natCity = null; STATE.natBranch = null;
+    const cityEl = document.getElementById('nat-city');
+    if (cityEl) {
+      cityEl.innerHTML = '<option value="">Selecciona la Ciudad</option>';
+      if (STATE.natState && NAT_CITIES[STATE.natState]) {
+        NAT_CITIES[STATE.natState].forEach(c => {
+          const o = document.createElement('option'); o.value = c; o.textContent = c; cityEl.appendChild(o);
+        });
+      }
+    }
+    var cWrap = document.getElementById('nat-city-wrap');
+    if(cWrap) { cWrap.classList.remove('dimmed'); cWrap.classList.remove('chk-dimmed'); }
+    var bWrap = document.getElementById('nat-branch-wrap');
+    if(bWrap) { bWrap.classList.add('dimmed'); bWrap.classList.add('chk-dimmed'); }
+    var nSum = document.getElementById('nat-summary');
+    if(nSum) nSum.classList.add('hidden');
+  };
+
+  window.onNatCityChange = function() {
+    const cityEl = document.getElementById('nat-city');
+    STATE.natCity = cityEl ? cityEl.value : null;
+    var bWrap = document.getElementById('nat-branch-wrap');
+    if(bWrap) { bWrap.classList.remove('dimmed'); bWrap.classList.remove('chk-dimmed'); }
+    updateNatSummary();
+  };
+
+  window.onNatBranchChange = function() {
+    const branchEl = document.getElementById('nat-branch');
+    STATE.natBranch = branchEl ? branchEl.value : null;
+    updateNatSummary();
+  };
+
+  function updateNatSummary() {
+    if (STATE.transport && STATE.natState && STATE.natCity && STATE.natBranch) {
+      var st = document.getElementById('sum-transport'); if(st) st.textContent = STATE.transport;
+      var stl = document.getElementById('sum-transport-label'); if(stl) stl.textContent = 'Envío por ' + STATE.transport;
+      var sd = document.getElementById('sum-dest'); if(sd) sd.textContent = STATE.natState + ', ' + STATE.natCity;
+      var sb = document.getElementById('sum-branch'); if(sb) sb.textContent = 'Sucursal: ' + STATE.natBranch;
+      var se = document.getElementById('sum-eta'); if(se) se.textContent = TRANSPORT_ETA[STATE.transport] || '3–5 días';
+      var nSum = document.getElementById('nat-summary'); if(nSum) nSum.classList.remove('hidden');
+    }
+  }
+
   window.selectStore = function(e, s, name) {
-    if(e && e.stopPropagation) e.stopPropagation();
+    if (typeof e === 'string' && !s) { s = e; name = STORE_NAMES[s] || ('Sede ' + s); }
+    if (e && e.stopPropagation) e.stopPropagation();
     STATE.store = s;
     ['Chacao','LasMercedes','LaCastellana'].forEach(x => {
       var c = document.getElementById('store-' + x); if(c) c.classList.remove('selected');
-      var r = document.getElementById('radio-store-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
+      var r = document.getElementById('radio-store-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = '<div class="radio-dot"></div>'; }
     });
     var stEl = document.getElementById('store-' + s); if(stEl) stEl.classList.add('selected');
     var radEl = document.getElementById('radio-store-' + s); if(radEl) { radEl.classList.add('selected'); radEl.innerHTML = '<div class="radio-dot"></div>'; }
     var pSection = document.getElementById('pickup-pay-section');
-    if(pSection) pSection.classList.remove('dimmed');
-    if(name) { var sn = document.getElementById('sum-store-name'); if(sn) sn.textContent = name; }
+    if(pSection) { pSection.classList.remove('dimmed'); pSection.classList.remove('chk-dimmed'); }
+    var sn = document.getElementById('sum-store-name') || document.getElementById('sum-store');
+    if(sn) sn.textContent = name || STORE_NAMES[s] || ('Sede ' + s);
     updatePickupSummary();
   };
 
   window.selectPickupPay = function(e, p) {
-    if(e && e.stopPropagation) e.stopPropagation();
+    if (typeof e === 'string' && !p) { p = e; }
+    if (e && e.stopPropagation) e.stopPropagation();
     STATE.pickupPay = p;
     ['online','store'].forEach(x => {
       var c = document.getElementById('ppay-' + x); if(c) c.classList.remove('selected');
-      var r = document.getElementById('radio-ppay-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
+      var r = document.getElementById('radio-ppay-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = '<div class="radio-dot"></div>'; }
     });
     var pEl = document.getElementById('ppay-' + p); if(pEl) pEl.classList.add('selected');
     var radEl = document.getElementById('radio-ppay-' + p); if(radEl) { radEl.classList.add('selected'); radEl.innerHTML = '<div class="radio-dot"></div>'; }
     updatePickupSummary();
   };
 
-  window.copyVal = function(val, btn) { window.copyText(val, btn); };
-  window.goConfirmacion = function() { window.goToConfirmacion(); };
-
-  window.onNatStateChange = function() {
-    STATE.natState = document.getElementById('nat-state').value;
-    STATE.natCity = null; STATE.natBranch = null;
-    const cityEl = document.getElementById('nat-city');
-    cityEl.innerHTML = '<option value="">Selecciona la Ciudad</option>';
-    if (STATE.natState && NAT_CITIES[STATE.natState]) {
-      NAT_CITIES[STATE.natState].forEach(c => {
-        const o = document.createElement('option'); o.value = c; o.textContent = c; cityEl.appendChild(o);
-      });
-    }
-    document.getElementById('nat-city-wrap').classList.remove('chk-dimmed');
-    document.getElementById('nat-branch-wrap').classList.add('chk-dimmed');
-    document.getElementById('nat-summary').classList.add('hidden');
-  };
-
-  window.onNatCityChange = function() {
-    STATE.natCity = document.getElementById('nat-city').value;
-    document.getElementById('nat-branch-wrap').classList.remove('chk-dimmed');
-  };
-
-  window.onNatBranchChange = function() {
-    STATE.natBranch = document.getElementById('nat-branch').value;
-    updateNatSummary();
-  };
-
-  function updateNatSummary() {
-    if (STATE.transport && STATE.natState && STATE.natCity && STATE.natBranch) {
-      document.getElementById('sum-transport').textContent = STATE.transport;
-      document.getElementById('sum-dest').textContent = STATE.natState + ', ' + STATE.natCity + ' (' + STATE.natBranch + ')';
-      document.getElementById('sum-eta').textContent = TRANSPORT_ETA[STATE.transport] || '3–5 días';
-      document.getElementById('nat-summary').classList.remove('hidden');
-    }
-  }
-
-  window.selectStore = function(s) {
-    STATE.store = s;
-    ['Chacao','LasMercedes','LaCastellana'].forEach(x => {
-      var c = document.getElementById('store-' + x); if(c) c.classList.remove('selected');
-      var r = document.getElementById('radio-store-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
-    });
-    var stEl = document.getElementById('store-' + s); if(stEl) stEl.classList.add('selected');
-    var radEl = document.getElementById('radio-store-' + s); if(radEl) { radEl.classList.add('selected'); radEl.innerHTML = '<div class="chk-radio-dot"></div>'; }
-    document.getElementById('pickup-pay-section').classList.remove('chk-dimmed');
-    updatePickupSummary();
-  };
-
-  window.selectPickupPay = function(p) {
-    STATE.pickupPay = p;
-    ['online','store'].forEach(x => {
-      var c = document.getElementById('ppay-' + x); if(c) c.classList.remove('selected');
-      var r = document.getElementById('radio-ppay-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
-    });
-    var pEl = document.getElementById('ppay-' + p); if(pEl) pEl.classList.add('selected');
-    var radEl = document.getElementById('radio-ppay-' + p); if(radEl) { radEl.classList.add('selected'); radEl.innerHTML = '<div class="chk-radio-dot"></div>'; }
-    updatePickupSummary();
-  };
-
   function updatePickupSummary() {
     if (STATE.store && STATE.pickupPay) {
-      document.getElementById('sum-store').textContent = STORE_NAMES[STATE.store];
-      document.getElementById('pickup-summary').classList.remove('hidden');
+      var pSum = document.getElementById('pickup-summary');
+      if(pSum) pSum.classList.remove('hidden');
     }
   }
 
   window.setCurrency = function(c) {
     STATE.currency = c;
-    document.getElementById('cur-USD').className = 'chk-seg-btn' + (c === 'USD' ? ' active' : '');
-    document.getElementById('cur-VES').className = 'chk-seg-btn' + (c === 'VES' ? ' active' : '');
-    document.getElementById('methods-USD').className = c === 'USD' ? '' : 'hidden';
-    document.getElementById('methods-VES').className = c === 'VES' ? '' : 'hidden';
+    var cu = document.getElementById('cur-USD'); if(cu) cu.className = 'seg-btn' + (c === 'USD' ? ' active' : '');
+    var cv = document.getElementById('cur-VES'); if(cv) cv.className = 'seg-btn' + (c === 'VES' ? ' active' : '');
+    var mu = document.getElementById('methods-USD'); if(mu) mu.className = c === 'USD' ? '' : 'hidden';
+    var mv = document.getElementById('methods-VES'); if(mv) mv.className = c === 'VES' ? '' : 'hidden';
     STATE.method = null;
-    document.getElementById('pay-instructions').classList.add('hidden');
+    var pi = document.getElementById('pay-instructions'); if(pi) pi.classList.add('hidden');
     updateTotals();
   };
 
@@ -2318,72 +2319,74 @@
     STATE.method = m;
     ['zelle','divisas','pagomovil','transferencia'].forEach(x => {
       var c = document.getElementById('pm-' + x); if(c) c.classList.remove('selected');
-      var r = document.getElementById('radio-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = ''; }
+      var r = document.getElementById('radio-' + x); if(r) { r.classList.remove('selected'); r.innerHTML = '<div class="radio-dot"></div>'; }
     });
     var mEl = document.getElementById('pm-' + m); if(mEl) mEl.classList.add('selected');
-    var rEl = document.getElementById('radio-' + m); if(rEl) { rEl.classList.add('selected'); rEl.innerHTML = '<div class="chk-radio-dot"></div>'; }
+    var rEl = document.getElementById('radio-' + m); if(rEl) { rEl.classList.add('selected'); rEl.innerHTML = '<div class="radio-dot"></div>'; }
     
     const details = PAY_DETAILS[m] || [];
     const html = details.map(d => `
-      <div class="chk-pay-row">
-        <div><div class="chk-pay-label">${d.label}</div><div class="chk-pay-value">${d.val}</div></div>
-        <button class="chk-copy-btn" onclick="copyText('${d.val}', this)">📋</button>
+      <div class="pay-row">
+        <div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:oklch(50% 0.01 260);">${d.label}</div>
+          <div style="font-size:13px;font-weight:700;margin-top:2px;">${d.val}</div>
+        </div>
+        <button class="copy-btn" onclick="copyVal('${d.val}', this)">📋</button>
       </div>
     `).join('');
-    document.getElementById('pay-details').innerHTML = html;
-    document.getElementById('pay-instructions').classList.remove('hidden');
-    checkPayReady();
+    var pd = document.getElementById('pay-details'); if(pd) pd.innerHTML = html;
+    var pi = document.getElementById('pay-instructions'); if(pi) pi.classList.remove('hidden');
+    var cBtn = document.getElementById('confirm-pay-btn'); if(cBtn) cBtn.disabled = false;
   };
 
   window.handleFile = function(input) {
     if (input.files && input.files[0]) {
       const f = input.files[0];
       STATE.hasFile = true;
-      document.getElementById('upload-empty').classList.add('hidden');
-      document.getElementById('file-preview').classList.remove('hidden');
-      document.getElementById('upload-zone').classList.add('has-file');
-      document.getElementById('file-name').textContent = f.name;
-      document.getElementById('file-size').textContent = (f.size / 1024).toFixed(0) + ' KB';
-      checkPayReady();
+      var ue = document.getElementById('upload-empty'); if(ue) ue.classList.add('hidden');
+      var fp = document.getElementById('file-preview'); if(fp) fp.classList.remove('hidden');
+      var uz = document.getElementById('upload-zone'); if(uz) uz.classList.add('has-file');
+      var fn = document.getElementById('file-name'); if(fn) fn.textContent = f.name;
+      var fs = document.getElementById('file-size'); if(fs) fs.textContent = (f.size / 1024).toFixed(0) + ' KB';
+      var cBtn = document.getElementById('confirm-pay-btn'); if(cBtn) cBtn.disabled = false;
     }
   };
 
   window.removeFile = function(e) {
-    e.stopPropagation();
+    if(e && e.stopPropagation) e.stopPropagation();
     STATE.hasFile = false;
-    document.getElementById('file-input').value = '';
-    document.getElementById('upload-empty').classList.remove('hidden');
-    document.getElementById('file-preview').classList.add('hidden');
-    document.getElementById('upload-zone').classList.remove('has-file');
-    checkPayReady();
+    var fi = document.getElementById('file-input'); if(fi) fi.value = '';
+    var ue = document.getElementById('upload-empty'); if(ue) ue.classList.remove('hidden');
+    var fp = document.getElementById('file-preview'); if(fp) fp.classList.add('hidden');
+    var uz = document.getElementById('upload-zone'); if(uz) uz.classList.remove('has-file');
+    var cBtn = document.getElementById('confirm-pay-btn');
+    if(cBtn && STATE.method !== 'divisas') cBtn.disabled = true;
   };
 
-  function checkPayReady() {
-    const ok = (STATE.method === 'divisas') || (STATE.method && STATE.hasFile);
-    document.getElementById('confirm-pay-btn').disabled = !ok;
-  }
-
-  window.copyText = function(val, btn) {
-    navigator.clipboard.writeText(val).then(() => {
-      btn.innerText = '✓';
-      setTimeout(() => { btn.innerText = '📋'; }, 1800);
-    });
+  window.copyVal = function(val, btn) {
+    if (navigator.clipboard && val) {
+      navigator.clipboard.writeText(val);
+      if(btn) {
+        var orig = btn.innerText; btn.innerText = '✓';
+        setTimeout(() => { btn.innerText = orig; }, 1500);
+      }
+    }
   };
-
+  window.goConfirmacion = function() { window.goToConfirmacion(); };
   window.goToConfirmacion = function() {
     const num = 'INF-' + Math.floor(100000 + Math.random() * 900000);
-    document.getElementById('conf-number').textContent = num;
-    document.getElementById('conf-products').textContent = cart.map(i => i.qty + 'x ' + i.name).join(', ') || '1x Pedido Infaplastic';
-    
+    var cn = document.getElementById('conf-number'); if(cn) cn.textContent = num;
+    var cp = document.getElementById('conf-products'); if(cp) cp.textContent = cart.map(i => i.qty + 'x ' + i.name).join(', ') || '1x Pedido Infaplastic';
+
     let delText = 'Delivery Local';
-    if (STATE.mode === 'national') delText = 'Envío ' + (STATE.transport || 'Nacional');
-    if (STATE.mode === 'pickup') delText = 'Retiro en ' + (STORE_NAMES[STATE.store] || 'Tienda');
-    document.getElementById('conf-delivery').textContent = delText;
-    
-    const mNames = { zelle:'Zelle', divisas:'Efectivo Divisas', pagomovil:'Pago Móvil', transferencia:'Transferencia' };
-    document.getElementById('conf-method').textContent = mNames[STATE.method] || 'Pago confirmado';
-    document.getElementById('conf-total').textContent = fmtCur(cartTotal());
-    
+    if (STATE.mode === 'national') delText = 'Envío Nacional (' + (STATE.transport||'MRW') + ')';
+    else if (STATE.mode === 'pickup') delText = 'Retiro en Tienda (' + (STORE_NAMES[STATE.store]||'Chacao') + ')';
+    var cd = document.getElementById('conf-delivery'); if(cd) cd.textContent = delText;
+
+    const mNames = { zelle:'Zelle (USD)', divisas:'Efectivo Divisas', pagomovil:'Pago Móvil (VES)', transferencia:'Transferencia Banesco (VES)' };
+    var cm = document.getElementById('conf-method'); if(cm) cm.textContent = mNames[STATE.method] || 'Pago confirmado';
+    var ct = document.getElementById('conf-total'); if(ct) ct.textContent = fmtCur(cartTotal());
+
     goStep('confirmacion');
   };
 
