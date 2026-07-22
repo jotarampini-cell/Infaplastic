@@ -1992,6 +1992,9 @@
   });
 
   /* ─── CHECKOUT LOGIC & HANDLERS ────────────────── */
+  const STEPS = ['entrega', 'datos', 'pago', 'confirmacion'];
+  window.STEPS = STEPS;
+
   window.STATE = {
     step: 'entrega', mode: null, transport: null, store: null, pickupPay: null,
     currency: 'USD', method: null, hasFile: false, city: null, zone: null,
@@ -2372,23 +2375,41 @@
   };
 
   window.openCheckout = function() {
-    closeCart();
-    closeMobileNav();
-    if (!cart.length) {
-      cart = [
-        { name: 'Vasos Térmicos 8oz (Paq. 50u)', price: 5.20, qty: 2, cat: 'Vasos' },
-        { name: 'Envase Bisagra 500ml (Paq. 100u)', price: 8.50, qty: 1, cat: 'Envases' }
-      ];
-      renderCart();
+    try {
+      closeCart();
+      closeMobileNav();
+      if (!cart.length) {
+        cart = [
+          { name: 'Vasos Térmicos 8oz (Paq. 50u)', price: 5.20, qty: 2, cat: 'Vasos' },
+          { name: 'Envase Bisagra 500ml (Paq. 100u)', price: 8.50, qty: 1, cat: 'Envases' }
+        ];
+        renderCart();
+      }
+      STATE.step = 'entrega';
+      goStep('entrega');
+      updateTotals();
+      var chkOverlay = document.getElementById('checkoutOverlay');
+      if (chkOverlay) {
+        chkOverlay.style.display = 'flex';
+        chkOverlay.classList.add('open');
+      }
+      document.body.style.overflow = 'hidden';
+    } catch(e) {
+      console.error('Error opening checkout:', e);
+      var chkOverlay = document.getElementById('checkoutOverlay');
+      if (chkOverlay) {
+        chkOverlay.style.display = 'flex';
+        chkOverlay.classList.add('open');
+      }
     }
-    goStep('entrega');
-    updateTotals();
-    document.getElementById('checkoutOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
   };
 
   window.closeCheckout = function() {
-    document.getElementById('checkoutOverlay').classList.remove('open');
+    var chkOverlay = document.getElementById('checkoutOverlay');
+    if (chkOverlay) {
+      chkOverlay.style.display = 'none';
+      chkOverlay.classList.remove('open');
+    }
     document.body.style.overflow = '';
   };
 
